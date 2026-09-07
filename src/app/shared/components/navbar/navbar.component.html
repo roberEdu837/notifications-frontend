@@ -1,0 +1,12 @@
+
+@if(!isLoginPage()){
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" routerLink="/notifications">Sistema</a>
+
+    <button class="btn btn-outline-danger" (click)="onLogout()">
+      Cerrar Sesión
+    </button>
+  </div>
+</nav>
+}

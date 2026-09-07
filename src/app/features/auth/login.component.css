@@ -1,0 +1,43 @@
+/* Entradas con fondo gris suave sin bordes oscuros */
+.custom-input {
+  background-color: #e9ecef;
+  border: none;
+  border-radius: 12px;
+  padding: 12px 16px;
+  color: #495057;
+}
+
+.custom-input:focus {
+  background-color: #e2e6ea;
+  box-shadow: none;
+}
+
+/* Botón naranja principal */
+.btn-orange {
+  background-color: #ff7a45;
+  border: none;
+  color: white;
+  border-radius: 12px;
+  font-weight: 600;
+  padding: 12px;
+  transition: background-color 0.2s ease;
+}
+
+.btn-orange:hover {
+  background-color: #f06a35;
+  color: white;
+}
+
+/* Posicionamiento del icono de la contraseña */
+.password-wrapper {
+  position: relative;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #6c757d;
+}
