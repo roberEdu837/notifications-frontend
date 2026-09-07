@@ -32,7 +32,10 @@ export class NotificationsComponent implements OnInit {
     selectedNotification = signal<NotificationItem | null>(null);
     statusFilter = signal<string>('A');
 
-    openEditModal(notification: NotificationItem): void {
+  openEditModal(notification: NotificationItem): void {
+        if (this.countries().length === 0) {
+            this.loadCatalogs();
+        }
         this.selectedNotification.set(notification);
     }
 
@@ -66,19 +69,18 @@ export class NotificationsComponent implements OnInit {
         this.modalElement = document.getElementById('createNotificationModal');
 
         if (this.modalElement) {
-            this.modalElement.addEventListener('shown.bs.modal', this.openCreateModal);
+            this.modalElement.addEventListener('shown.bs.modal', () => {
+                if (this.countries().length === 0 || this.companies().length === 0 || this.systems().length === 0) {
+                    this.loadCatalogs();
+                }
+            });
+
             this.modalElement.addEventListener('hidden.bs.modal', () => {
                 this.selectedNotification.set(null);
             });
         }
     }
 
-    private openCreateModal = () => {
-        if (this.countries().length === 0 || this.companies().length === 0 || this.systems().length === 0) {
-            this.loadCatalogs();
-            this.selectedNotification.set(null);
-        }
-    }
 
     loadCatalogs(): void {
         if (this.countries().length > 0) return;

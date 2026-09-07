@@ -31,7 +31,15 @@ export class NotificationFormComponent {
             if(data){
                 this.notificationForm.patchValue(data);
             }else{
-                this.notificationForm.reset();
+                this.notificationForm.reset({
+                    companyId: '',
+                    countryId: '',
+                    systemId: '',
+                    messageTypeId: '',
+                    message: '',
+                    status: 'A',
+                    displayDuration:0
+                });
             }
 
         });
@@ -47,7 +55,7 @@ export class NotificationFormComponent {
         systemId: ['', [Validators.required]],
         messageTypeId: ['', [Validators.required]],
         message: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(100)]],
-        displayDuration: [10, [Validators.required, Validators.min(1)]],
+        displayDuration: [0, []],
         status: ['A', [Validators.required]]
     });
 
