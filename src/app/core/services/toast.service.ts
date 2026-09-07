@@ -25,7 +25,7 @@ export class ToastService {
         });
 
         const renderer = this.rendererFactory.createRenderer(null, null);
-        renderer.listen('document', 'click', (event: Event) => {
+        renderer.listen('document', 'click', () => {
             if (this.activeToastId !== undefined) {
                 this.clearActive();
             }
@@ -40,7 +40,6 @@ export class ToastService {
 
         const opciones: Partial<IndividualConfig> = {
             timeOut: timeout,
-            extendedTimeOut: timeout === 0 ? 1000 : 1000,
             closeButton: closeBtn,
             disableTimeOut: timeout === 0
         };
