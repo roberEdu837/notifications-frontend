@@ -8,6 +8,7 @@ import { CatalogItem } from "../../core/models/catalog.model";
 import { forkJoin } from "rxjs";
 import { MessageType } from "../../core/models/message-types.model";
 import { NotificationFormComponent } from "./notification-form/notification-form.component";
+import { AlertaJson, ToastService } from "../../core/services/toast.service";
 
 
 @Component({
@@ -22,6 +23,8 @@ export class NotificationsComponent implements OnInit {
     private readonly notificationService = inject(NotificationService);
     private readonly catalogService = inject(CatalogService);
     private readonly cdr = inject(ChangeDetectorRef);
+    private toastService = inject(ToastService);
+
     private modalElement: HTMLElement | null = null;
 
     countries = signal<CatalogItem[]>([]);
@@ -32,7 +35,8 @@ export class NotificationsComponent implements OnInit {
     selectedNotification = signal<NotificationItem | null>(null);
     statusFilter = signal<string>('A');
 
-  openEditModal(notification: NotificationItem): void {
+
+    openEditModal(notification: NotificationItem): void {
         if (this.countries().length === 0) {
             this.loadCatalogs();
         }
@@ -43,10 +47,10 @@ export class NotificationsComponent implements OnInit {
     isLoading = signal<boolean>(false);
     errorMessage: string = '';
 
-
     ngOnInit(): void {
         this.loadNotifications();
     }
+
 
     loadNotifications(): void {
         this.isLoading.set(true);
@@ -117,10 +121,20 @@ export class NotificationsComponent implements OnInit {
                 this.cdr.detectChanges();
             },
             error: (err) => {
+                this.toastService.triggerAlert({
+                    name: 'Borrado exitoso',
+                    color: 'danger',
+                    durationSeconds: 15
+                });
                 console.error('Error al eliminar la notificación:', err);
                 this.cdr.detectChanges();
             }
         })
+        this.toastService.triggerAlert({
+            name: 'Registro exitoso',
+            color: 'success',
+            durationSeconds: 15
+        });
     }
 
     filteredNotifications = computed(() => {

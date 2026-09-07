@@ -5,6 +5,7 @@ import { NotificationService } from "../../../core/services/notification.service
 import { CatalogItem } from "../../../core/models/catalog.model";
 import { MessageType } from "../../../core/models/message-types.model";
 import { NotificationItem } from "../../../core/models/notification.model";
+import { ToastService } from "../../../core/services/toast.service";
 
 @Component({
     selector: 'app-notification-form',
@@ -15,6 +16,8 @@ import { NotificationItem } from "../../../core/models/notification.model";
 export class NotificationFormComponent {
     private readonly notificationService = inject(NotificationService);
     private readonly fb = inject(FormBuilder);
+
+    private toastService = inject(ToastService);
 
     countries = input.required<CatalogItem[]>();
     companies = input.required<CatalogItem[]>();
@@ -28,9 +31,9 @@ export class NotificationFormComponent {
         effect(() => {
 
             const data = this.notificationData();
-            if(data){
+            if (data) {
                 this.notificationForm.patchValue(data);
-            }else{
+            } else {
                 this.notificationForm.reset({
                     companyId: '',
                     countryId: '',
@@ -38,7 +41,7 @@ export class NotificationFormComponent {
                     messageTypeId: '',
                     message: '',
                     status: 'A',
-                    displayDuration:0
+                    displayDuration: 0
                 });
             }
 
@@ -78,11 +81,17 @@ export class NotificationFormComponent {
 
 
         request$.subscribe({
-            next: () => {
+            next: (data) => {
+                console.log(data)
                 this.isSubmitting.set(false);
                 this.isLoadingForm.set(false);
                 this.notificationForm.reset();
                 this.loadNotifications.emit();
+                this.toastService.triggerAlert({
+                    name: 'Registro exitoso',
+                    color: 'success',
+                    durationSeconds: 15
+                });
 
                 const modalElement = document.getElementById('createNotificationModal');
                 if (modalElement) {
@@ -97,6 +106,11 @@ export class NotificationFormComponent {
                 document.body.style.removeProperty('padding-right');
             },
             error: (err) => {
+                this.toastService.triggerAlert({
+                    name: 'Ocurrió un error en el sistema, intenta más tarde',
+                    color: 'danger',
+                    durationSeconds: 15
+                });
                 this.isSubmitting.set(false);
                 this.isLoadingForm.set(false);
                 this.errorMessage.set('Ocurrió un error de conexión con el servidor.');
