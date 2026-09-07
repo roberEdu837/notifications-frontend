@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, ChangeDetectorRef, signal } from "@angular/core";
+import { Component, inject, OnInit, ChangeDetectorRef, signal, computed } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { NotificationService } from "../../core/services/notification.service";
 import { NotificationItem } from "../../core/models/notification.model";
@@ -7,11 +7,13 @@ import { CatalogService } from "../../core/services/catalog.service";
 import { CatalogItem } from "../../core/models/catalog.model";
 import { forkJoin } from "rxjs";
 import { MessageType } from "../../core/models/message-types.model";
+import { NotificationFormComponent } from "./notification-form/notification-form.component";
+
 
 @Component({
     selector: 'app-notifications',
     standalone: true,
-    imports: [CommonModule, ReactiveFormsModule],
+    imports: [CommonModule, ReactiveFormsModule, NotificationFormComponent],
     templateUrl: './notifications.component.html',
     styleUrl: './notifications.component.css'
 })
@@ -20,7 +22,6 @@ export class NotificationsComponent implements OnInit {
     private readonly notificationService = inject(NotificationService);
     private readonly catalogService = inject(CatalogService);
     private readonly cdr = inject(ChangeDetectorRef);
-    private readonly fb = inject(FormBuilder);
     private modalElement: HTMLElement | null = null;
 
     countries = signal<CatalogItem[]>([]);
@@ -28,23 +29,16 @@ export class NotificationsComponent implements OnInit {
     systems = signal<CatalogItem[]>([]);
     messageTypes = signal<MessageType[]>([]);
     isLoadingCatalogs = signal<boolean>(false);
-    isLoadingForm = signal<boolean>(false);
+    selectedNotification = signal<NotificationItem | null>(null);
+    statusFilter = signal<string>('A');
+
+    openEditModal(notification: NotificationItem): void {
+        this.selectedNotification.set(notification);
+    }
 
     notifications = signal<NotificationItem[]>([]);
     isLoading = signal<boolean>(false);
-    isSubmitting = signal<boolean>(false);
     errorMessage: string = '';
-
-
-    notificationForm: FormGroup = this.fb.group({
-        companyId: ['', [Validators.required]],
-        countryId: ['', [Validators.required]],
-        systemId: ['', [Validators.required]],
-        messageTypeId: ['', [Validators.required]],
-        message: ['', [Validators.required, Validators.minLength(5)]],
-        displayDuration: [10, [Validators.required, Validators.min(1)]],
-        status: ['A', [Validators.required]]
-    });
 
 
     ngOnInit(): void {
@@ -72,13 +66,17 @@ export class NotificationsComponent implements OnInit {
         this.modalElement = document.getElementById('createNotificationModal');
 
         if (this.modalElement) {
-            this.modalElement.addEventListener('shown.bs.modal', this.onModalOpen);
+            this.modalElement.addEventListener('shown.bs.modal', this.openCreateModal);
+            this.modalElement.addEventListener('hidden.bs.modal', () => {
+                this.selectedNotification.set(null);
+            });
         }
     }
 
-    private onModalOpen = () => {
-        if (this.countries.length === 0 || this.companies.length === 0 || this.systems.length === 0) {
+    private openCreateModal = () => {
+        if (this.countries().length === 0 || this.companies().length === 0 || this.systems().length === 0) {
             this.loadCatalogs();
+            this.selectedNotification.set(null);
         }
     }
 
@@ -107,40 +105,27 @@ export class NotificationsComponent implements OnInit {
         });
     }
 
-    onSubmit(): void {
-    if (this.notificationForm.invalid) {
-        this.notificationForm.markAllAsTouched();
-        return;
-    }
-    this.isLoadingForm.set(true);
-    this.isSubmitting.set(true);
-    this.errorMessage = '';
+    deleteNotification(folio: number): void {
+        const confirmation = confirm('¿Estás seguro de que deseas eliminar esta notificación?');
+        if (!confirmation) return;
 
-    this.notificationService.createNotification(this.notificationForm.getRawValue()).subscribe({
-        next: () => {
-            this.isSubmitting.set(false);
-            this.isLoadingForm.set(false);
-            this.notificationForm.reset({ displayDuration: 10, status: 'A' });
-            this.loadNotifications();
-
-            if (this.modalElement) {
-                const modalInstance = (window as any).bootstrap.Modal.getInstance(this.modalElement) 
-                    || new (window as any).bootstrap.Modal(this.modalElement);
-                modalInstance.hide();
+        this.notificationService.deleteLogicalNotification(folio).subscribe({
+            next: () => {
+                this.notifications.set(this.notifications().filter(n => n.folio !== folio));
+                this.cdr.detectChanges();
+            },
+            error: (err) => {
+                console.error('Error al eliminar la notificación:', err);
+                this.cdr.detectChanges();
             }
+        })
+    }
 
-            document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
-            document.body.classList.remove('modal-open');
-            document.body.style.removeProperty('overflow');
-            document.body.style.removeProperty('padding-right');
-        },
-        error: (err) => {
-            this.isSubmitting.set(false);
-            this.isLoadingForm.set(false);
-            this.errorMessage = err.status === 401 || err.status === 403
-                ? 'Usuario o contraseña incorrectos.'
-                : 'Ocurrió un error de conexión con el servidor.';
-        }
+    filteredNotifications = computed(() => {
+        const filter = this.statusFilter();
+        const items = this.notifications();
+        return items.filter(item => item.status === filter);
     });
-}
+
+
 }

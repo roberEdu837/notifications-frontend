@@ -15,4 +15,14 @@ export class NotificationService {
   createNotification(notification: NotificationRequest) {
     return this.http.post<NotificationRequest>('/messages', notification);
   }
+
+  updateNotification(folio:number, notification: NotificationRequest) {
+    return this.http.put<NotificationRequest>(`/messages/${folio}`, notification);
+  }
+
+  deleteLogicalNotification(folio: number) {
+    return this.http.patch(`/messages/${folio}/delete`,{});
+  }
+
+
 }

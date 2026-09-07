@@ -7,6 +7,16 @@
     </button>
   </div>
 
+  <div class="row mb-3">
+    <div class="col-md-3">
+      <label class="form-label small fw-semibold text-muted">Filtrar por Estado</label>
+      <select class="form-select form-select-sm" (change)="statusFilter.set($any($event.target).value)">
+        <option value="A">Activo</option>
+        <option value="B">Inactivo</option>
+      </select>
+    </div>
+  </div>
+
   @if (isLoading()) {
   <div class="text-center py-5">
     <div class="spinner-border text-primary" role="status"></div>
@@ -28,10 +38,11 @@
           <th>Duración</th>
           <th>Estado</th>
           <th>Fecha Creación</th>
+          <th>Acciones</th>
         </tr>
       </thead>
       <tbody>
-        @for (item of notifications(); track item.folio) {
+        @for (item of filteredNotifications(); track item.folio) {
         <tr>
           <td class="fw-bold">#{{ item.folio }}</td>
           <td>{{ item.systemName }}</td>
@@ -41,19 +52,25 @@
           <td class="text-wrap" style="max-width: 300px;">{{ item.message }}</td>
           <td>{{ item.displayDuration }}s</td>
           <td>
-            @if (item.status === 'A' || item.status === 'ACTIVE') {
-            <span class="badge bg-success-subtle text-success border border-success-subtle">
-              Activo
-            </span>
-            } @else {
+           
             <span class="badge bg-secondary-subtle text-secondary border border-secondary-subtle">
               {{ item.status }}
             </span>
-            }
+            
           </td>
           <td class="text-muted small">
             {{ item.createdAt | date:'short' }}
           </td>
+          <td>
+            <button class="btn btn-sm btn-outline-primary d-flex align-items-center gap-1"
+              data-bs-toggle="modal" data-bs-target="#createNotificationModal"
+              (click)="openEditModal(item)">
+              <i class="bi bi-pencil-fill"></i> 
+            </button>
+            <button class="btn btn-sm btn-outline-danger d-flex align-items-center gap-1"
+              (click)="deleteNotification(item.folio)">
+              <i class="bi bi-trash-fill"></i>
+            </button>
         </tr>
         }
       </tbody>
@@ -66,100 +83,24 @@
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title fw-bold" id="modalTitle">Nueva Notificación</h5>
+        <h5 class="modal-title fw-bold" id="modalTitle">
+          @if (selectedNotification()) {
+            Editar Notificación
+          } @else {
+            Nueva Notificación
+          }
+        </h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
 
-      <form [formGroup]="notificationForm" (ngSubmit)="onSubmit()" class="d-flex flex-column gap-3">
-        <div class="modal-body">
-
-          <!-- Empresa -->
-          <div class="mb-3">
-            <label class="form-label fw-semibold">Empresa</label>
-            <select class="form-select" formControlName="companyId"
-              [class.is-invalid]="notificationForm.get('companyId')?.touched && notificationForm.get('companyId')?.invalid">
-              <option value="">Selecciona una empresa...</option>
-              @for (item of companies(); track item.id) {
-              <option [value]="item.id">{{ item.name }}</option>
-              }
-            </select>
-          </div>
-
-          <!-- País -->
-          <div class="mb-3">
-            <label class="form-label fw-semibold">País</label>
-            <select class="form-select" formControlName="countryId"
-              [class.is-invalid]="notificationForm.get('countryId')?.touched && notificationForm.get('countryId')?.invalid">
-              <option value="">Selecciona un país...</option>
-              @for (item of countries(); track item.id) {
-              <option [value]="item.id">{{ item.name }}</option>
-              }
-            </select>
-          </div>
-
-          <!-- Sistema -->
-          <div class="mb-3">
-            <label class="form-label fw-semibold">Sistema</label>
-            <select class="form-select" formControlName="systemId"
-              [class.is-invalid]="notificationForm.get('systemId')?.touched && notificationForm.get('systemId')?.invalid">
-              <option value="">Selecciona un sistema...</option>
-              @for (item of systems(); track item.id) {
-              <option [value]="item.id">{{ item.name }}</option>
-              }
-            </select>
-          </div>
-
-          <!-- Tipo de Mensaje -->
-          <div class="mb-3">
-            <label class="form-label fw-semibold">Tipo de Mensaje</label>
-            <select class="form-select" formControlName="messageTypeId"
-              [class.is-invalid]="notificationForm.get('messageTypeId')?.touched && notificationForm.get('messageTypeId')?.invalid">
-              <option value="">Selecciona un tipo de mensaje...</option>
-              @for (item of messageTypes(); track item.id) {
-              <option [value]="item.id">{{ item.name }}</option>
-              }
-            </select>
-          </div>
-
-          <!-- Mensaje -->
-          <div class="mb-3">
-            <label class="form-label fw-semibold">Mensaje</label>
-            <textarea class="form-control" rows="3" formControlName="message"
-              [class.is-invalid]="notificationForm.get('message')?.touched && notificationForm.get('message')?.invalid"></textarea>
-            @if (notificationForm.get('message')?.touched && notificationForm.get('message')?.invalid) {
-            <div class="invalid-feedback">El mensaje es obligatorio (mínimo 5 caracteres).</div>
-            }
-          </div>
-
-          <!-- Duración y Estado -->
-          <div class="row">
-            <div class="col-md-6 mb-3">
-              <label class="form-label fw-semibold">Duración (segundos)</label>
-              <input type="number" class="form-control" formControlName="displayDuration">
-            </div>
-
-            <div class="col-md-6 mb-3">
-              <label class="form-label fw-semibold">Estado</label>
-              <select class="form-select" formControlName="status">
-                <option value="A">Activo</option>
-                <option value="I">Inactivo</option>
-              </select>
-            </div>
-          </div>
-        </div>
-
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-          <button type="submit" class="btn btn-primary" [disabled]="isSubmitting()">
-            @if (isSubmitting()) {
-            <span class="spinner-border spinner-border-sm me-1"></span> Guardando...
-            } @else {
-            Guardar
-            }
-          </button>
-        </div>
-      </form>
-
+      <app-notification-form
+        [countries]="countries()"
+        [companies]="companies()"
+        [systems]="systems()"
+        [messageTypes]="messageTypes()"
+        [notificationData]="selectedNotification()"
+        (loadNotifications)="loadNotifications()">
+      </app-notification-form>
     </div>
   </div>
 </div>
