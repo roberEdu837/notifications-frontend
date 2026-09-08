@@ -12,7 +12,6 @@
   box-shadow: none;
 }
 
-/* Botón naranja principal */
 .btn-orange {
   background-color: #ff7a45;
   border: none;
@@ -28,7 +27,6 @@
   color: white;
 }
 
-/* Posicionamiento del icono de la contraseña */
 .password-wrapper {
   position: relative;
 }

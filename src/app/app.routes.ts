@@ -10,7 +10,11 @@ export const routes: Routes = [
     path: 'notifications',
     loadComponent: () => import('./features/notifications/notifications.component').then(m => m.NotificationsComponent),
     canActivate: [authGuard]
-  },    
+  },
+  {
+   path:'simulator',
+   loadComponent:() => import('./features/simulator/simulator.componen').then(m => m.SimulatorComponent)
+  },   
   {
     path: '',
     redirectTo: 'login',
