@@ -33,12 +33,16 @@ export const notificationInterceptor: HttpInterceptorFn = (req, next) => {
                 if (payload.companyId !== 0) {
                     notificationService.getNotificationByInfo(payload).subscribe({
                         next: (res: any) => {
-                            toastService.triggerAlert({
-                                color: res.color,
-                                name: res.message,
-                                allowClose: res.allowClose || null,
-                                durationSeconds: res.displayDuration || 5
-                            });
+                            if (res) {
+                                toastService.triggerAlert({
+                                    color: res.color,
+                                    name: res.message,
+                                    allowClose: res.allowClose || null,
+                                    durationSeconds: res.displayDuration || 5
+                                });
+                            } else {
+
+                            }
                         }
                     });
                 } else {
@@ -56,15 +60,20 @@ export const notificationInterceptor: HttpInterceptorFn = (req, next) => {
                 name: errorName
             };
 
+
             if (payload.companyId !== 0) {
                 notificationService.getNotificationByInfo(payload).subscribe({
                     next: (res: any) => {
-                        toastService.triggerAlert({
-                            color: res.color,
-                            name: res.message,
-                            allowClose: res.allowClose || null,
-                            durationSeconds: res.displayDuration || 5
-                        });
+                        if (res) {
+                            toastService.triggerAlert({
+                                color: res.color,
+                                name: res.message,
+                                allowClose: res.allowClose || null,
+                                durationSeconds: res.displayDuration || 5
+                            });
+                        } else {
+
+                        }
                     },
                     error: () => {
                     }
