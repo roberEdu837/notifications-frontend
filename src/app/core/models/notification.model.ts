@@ -40,3 +40,13 @@ export interface NotificationInfoRequest {
   systemId: number;
   name: string;
 }
+
+export const INITIAL_NOTIFICATION_VALUES = {
+  companyId: '',
+  countryId: '',
+  systemId: '',
+  messageTypeId: '',
+  message: '',
+  status: 'A',
+  displayDuration: 0
+};

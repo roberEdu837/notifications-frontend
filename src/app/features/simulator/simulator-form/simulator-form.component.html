@@ -1,0 +1,32 @@
+<form [formGroup]="simulatorForm" (ngSubmit)="onSubmit()" class="d-flex flex-column gap-3">
+    <div class="modal-body">
+      <div class="row">
+      <div class="col">
+        <label class="form-label fw-semibold">Nombre completo</label>
+        <input type="text" class="form-control" formControlName="name" [ngClass]="{'is-invalid': simulatorForm.get('name')?.invalid && simulatorForm.get('name')?.touched}">
+        
+        @if (simulatorForm.get('name')?.touched) {
+          @if (simulatorForm.get('name')?.hasError('required')) {
+            <div class="invalid-feedback">El nombre completo es obligatorio.</div>
+          }
+          @if (simulatorForm.get('name')?.hasError('minlength')) {
+            <div class="invalid-feedback">Debe tener al menos 3 caracteres.</div>
+          }
+          @if (simulatorForm.get('name')?.hasError('maxlength')) {
+            <div class="invalid-feedback">No puede superar los 50 caracteres.</div>
+          }
+        }
+      </div>
+  </div>
+    </div>
+    <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+    <button type="submit" class="btn btn-primary" >
+      @if (isSubmitting()) {
+      <span class="spinner-border spinner-border-sm me-1"></span> Guardando...
+      } @else {
+      Guardar
+      }
+    </button>
+  </div>
+</form>

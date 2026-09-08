@@ -21,6 +21,7 @@ export const notificationInterceptor: HttpInterceptorFn = (req, next) => {
     return next(req).pipe(
         tap(event => {
             if (event instanceof HttpResponse) {
+                console.log(event)
 
                 const payload = {
                     systemId: 3,
