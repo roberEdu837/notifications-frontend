@@ -23,10 +23,11 @@ export class NotificationsComponent implements OnInit {
     private readonly notificationService = inject(NotificationService);
     private readonly catalogService = inject(CatalogService);
     private readonly cdr = inject(ChangeDetectorRef);
-      private readonly toastService = inject(ToastService);
+    private readonly toastService = inject(ToastService);
 
     private modalElement: HTMLElement | null = null;
 
+    folioFilter = signal<string>('');
     countries = signal<CatalogItem[]>([]);
     companies = signal<CatalogItem[]>([]);
     systems = signal<CatalogItem[]>([]);
@@ -110,12 +111,12 @@ export class NotificationsComponent implements OnInit {
     }
 
     deleteNotification(folio: number): void {
-        
+
         this.notificationService.deleteLogicalNotification(folio).subscribe({
             next: () => {
                 this.notifications.set(this.notifications().filter(n => n.folio !== folio));
                 this.cdr.detectChanges();
-                 this.toastService.triggerAlert({
+                this.toastService.triggerAlert({
                     color: 'success',
                     name: `Borrado exitoso`,
                     durationSeconds: 10
@@ -128,11 +129,20 @@ export class NotificationsComponent implements OnInit {
         })
     }
 
+
     filteredNotifications = computed(() => {
-        const filter = this.statusFilter();
+        const status = this.statusFilter();
+        const folioQuery = this.folioFilter().trim().toLowerCase();
         const items = this.notifications();
-        return items.filter(item => item.status === filter);
+
+        return items.filter(item => {
+            const matchesStatus = item.status === status;
+            const matchesFolio = folioQuery === '' || item.folio.toString().toLowerCase().includes(folioQuery);
+            return matchesStatus && matchesFolio;
+        });
     });
+
+
 
 
 }
