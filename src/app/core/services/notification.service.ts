@@ -1,6 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
-import { NotificationItem, NotificationRequest } from "../models/notification.model";
+import { NotificationInfoRequest, NotificationItem, NotificationRequest } from "../models/notification.model";
 
 @Injectable({
   providedIn: 'root'
@@ -16,12 +16,17 @@ export class NotificationService {
     return this.http.post<NotificationRequest>('/messages', notification);
   }
 
-  updateNotification(folio:number, notification: NotificationRequest) {
+  updateNotification(folio: number, notification: NotificationRequest) {
     return this.http.put<NotificationRequest>(`/messages/${folio}`, notification);
   }
 
   deleteLogicalNotification(folio: number) {
-    return this.http.patch(`/messages/${folio}/delete`,{});
+    return this.http.patch(`/messages/${folio}/delete`, {});
+  }
+
+  getNotificationByInfo(config: NotificationInfoRequest) {
+    return this.http.post(`/messages/configuration`, config);
+
   }
 
 

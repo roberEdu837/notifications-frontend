@@ -12,6 +12,8 @@ export interface NotificationItem {
   displayDuration: number;
   status: string;
   createdAt: string;
+    allowClose?:boolean;
+
 }
 
 export interface NotificationRequest {
@@ -22,4 +24,19 @@ export interface NotificationRequest {
   message: string;
   displayDuration: number;
   status: string;
+}
+
+export interface NotificationResponse{
+  messageTypeName:string;
+  message: string;
+  displayDuration?:number | null;
+  allowClose?:boolean;
+  color: 'success' | 'danger' | 'warning' | 'info';
+}
+
+export interface NotificationInfoRequest {
+  companyId: number;
+  countryId: number;
+  systemId: number;
+  name: string;
 }

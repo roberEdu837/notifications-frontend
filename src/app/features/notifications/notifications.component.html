@@ -36,6 +36,7 @@
           <th>Empresa</th>
           <th>País</th>
           <th>Tipo de Mensaje</th>
+          <th>Permite Cerrar</th>
           <th>Mensaje</th>
           <th>Duración</th>
           <th>Estado</th>
@@ -51,6 +52,7 @@
           <td>{{ item.companyName }}</td>
           <td>{{ item.countryName }}</td>
           <td>{{ item.messageTypeName }}</td>
+          <td>{{ item.allowClose? 'Si': 'No' }}</td>
           <td class="text-wrap" style="max-width: 300px;">{{ item.message }}</td>
           <td>{{ item.displayDuration }}s</td>
           <td>

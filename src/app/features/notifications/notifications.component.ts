@@ -121,20 +121,20 @@ export class NotificationsComponent implements OnInit {
                 this.cdr.detectChanges();
             },
             error: (err) => {
-                this.toastService.triggerAlert({
-                    name: 'Borrado exitoso',
-                    color: 'danger',
-                    durationSeconds: 15
-                });
+                // this.toastService.triggerAlert({
+                //     name: 'Borrado exitoso',
+                //     color: 'danger',
+                //     durationSeconds: 15
+                // });
                 console.error('Error al eliminar la notificación:', err);
                 this.cdr.detectChanges();
             }
         })
-        this.toastService.triggerAlert({
-            name: 'Registro exitoso',
-            color: 'success',
-            durationSeconds: 15
-        });
+        // this.toastService.triggerAlert({
+        //     name: 'Registro exitoso',
+        //     color: 'success',
+        //     durationSeconds: 15
+        // });
     }
 
     filteredNotifications = computed(() => {
