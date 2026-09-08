@@ -12,7 +12,7 @@ export interface NotificationItem {
   displayDuration: number;
   status: string;
   createdAt: string;
-    allowClose?:boolean;
+  allowClose?:boolean;
 
 }
 
@@ -48,5 +48,5 @@ export const INITIAL_NOTIFICATION_VALUES = {
   messageTypeId: '',
   message: '',
   status: 'A',
-  displayDuration: 0
+  displayDuration: null
 };

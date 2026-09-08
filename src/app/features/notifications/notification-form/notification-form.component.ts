@@ -26,6 +26,7 @@ export class NotificationFormComponent {
     notificationData = input<NotificationItem | null>(null);
     loadNotifications = output<void>();
 
+
     isLoadingForm = signal<boolean>(false);
     isSubmitting = signal<boolean>(false);
     errorMessage = signal<string>('');
@@ -36,12 +37,13 @@ export class NotificationFormComponent {
         systemId: ['', [Validators.required]],
         messageTypeId: ['', [Validators.required]],
         message: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(100)]],
-        displayDuration: [0, []],
+        displayDuration: [null, []],
         status: ['A', [Validators.required]]
     });
 
     constructor() {
         effect(() => {
+            console.log(this.notificationData())
             const data = this.notificationData();
             if (data) {
                 this.notificationForm.patchValue(data);

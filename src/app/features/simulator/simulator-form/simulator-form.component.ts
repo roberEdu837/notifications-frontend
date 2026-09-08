@@ -19,9 +19,8 @@ export class SimulatorFormComponent {
   loadLawyers = output<void>();
 
 
-
   simulatorForm: FormGroup = this.fb.group({
-    name: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(50)]]
+    name: ['', [Validators.required, Validators.minLength(5)]]
   });
 
   onSubmit(): void {
@@ -43,7 +42,7 @@ export class SimulatorFormComponent {
         forceCloseModal("simulatorModal");
         this.loadLawyers.emit();
       },
-      error: () => {
+      error: (error) => {
         this.isSubmitting.set(false);
         this.isLoading.set(false);
         this.errorMessage.set('Ocurrió un error de conexión con el servidor.');

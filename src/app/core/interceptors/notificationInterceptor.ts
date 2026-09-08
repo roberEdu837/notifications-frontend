@@ -21,7 +21,7 @@ export const notificationInterceptor: HttpInterceptorFn = (req, next) => {
     return next(req).pipe(
         tap(event => {
             if (event instanceof HttpResponse) {
-                console.log(event)
+                console.log(event,'hooalal')
 
                 const payload = {
                     systemId: 3,
@@ -44,7 +44,7 @@ export const notificationInterceptor: HttpInterceptorFn = (req, next) => {
         }),
         catchError((error: HttpErrorResponse) => {
 
-            const errorName = error.status === 409 ? 'Precaución/Advertencia' : 'Error';
+            const errorName = error.status === 409 ? 'Informativo' : 'Error';
 
             const payload = {
                 systemId: 3,
@@ -67,6 +67,7 @@ export const notificationInterceptor: HttpInterceptorFn = (req, next) => {
             });
 
             return throwError(() => error);
+            
         })
     );
 };

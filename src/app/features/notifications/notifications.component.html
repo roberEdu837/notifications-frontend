@@ -1,12 +1,10 @@
 <div class="container py-4">
   <div class="d-flex justify-content-between align-items-center mb-3">
     <h3 class="fw-bold m-0">Notificaciones</h3>
-    <button class="btn btn-outline-primary d-flex align-items-center gap-2" 
-        (click)="selectedNotification.set(null)" 
-        data-bs-toggle="modal"
-        data-bs-target="#createNotificationModal">
-  <i class="bi bi-plus-lg"></i> Nuevo
-</button>
+    <button class="btn btn-outline-primary d-flex align-items-center gap-2" (click)="selectedNotification.set(null)"
+      data-bs-toggle="modal" data-bs-target="#createNotificationModal">
+      <i class="bi bi-plus-lg"></i> Nuevo
+    </button>
   </div>
 
   <div class="row mb-3">
@@ -54,30 +52,30 @@
           <td>{{ item.messageTypeName }}</td>
           <td>{{ item.allowClose? 'Si': 'No' }}</td>
           <td class="text-wrap" style="max-width: 300px;">{{ item.message }}</td>
-          <td>{{ item.displayDuration }}s</td>
+          <td>{{ item.displayDuration !== null && item.displayDuration !== undefined ? item.displayDuration + 's' : '-'
+            }}</td>
           <td>
-           
+
             <span class="badge bg-secondary-subtle text-secondary border border-secondary-subtle">
               {{ item.status }}
             </span>
-            
+
           </td>
           <td class="text-muted small">
             {{ item.createdAt | date:'short' }}
           </td>
           <td>
-            <button class="btn btn-sm btn-outline-primary d-flex align-items-center gap-1"
-              data-bs-toggle="modal" data-bs-target="#createNotificationModal"
-              (click)="openEditModal(item)">
-              <i class="bi bi-pencil-fill"></i> 
+            <button class="btn btn-sm btn-outline-primary d-flex align-items-center gap-1" data-bs-toggle="modal"
+              data-bs-target="#createNotificationModal" (click)="openEditModal(item)">
+              <i class="bi bi-pencil-fill"></i>
             </button>
             @if(item.status !== 'B'){
-                <button class="btn btn-sm btn-outline-danger d-flex align-items-center gap-1"
+            <button class="btn btn-sm btn-outline-danger d-flex align-items-center gap-1"
               (click)="deleteNotification(item.folio)">
               <i class="bi bi-trash-fill"></i>
             </button>
             }
-           
+
         </tr>
         }
       </tbody>
@@ -92,20 +90,16 @@
       <div class="modal-header">
         <h5 class="modal-title fw-bold" id="modalTitle">
           @if (selectedNotification()) {
-            Editar Notificación
+          Editar Notificación
           } @else {
-            Nueva Notificación
+          Nueva Notificación
           }
         </h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
 
-      <app-notification-form
-        [countries]="countries()"
-        [companies]="companies()"
-        [systems]="systems()"
-        [messageTypes]="messageTypes()"
-        [notificationData]="selectedNotification()"
+      <app-notification-form [countries]="countries()" [companies]="companies()" [systems]="systems()"
+        [messageTypes]="messageTypes()" [notificationData]="selectedNotification()"
         (loadNotifications)="loadNotifications()">
       </app-notification-form>
     </div>
