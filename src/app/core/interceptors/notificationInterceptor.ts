@@ -4,10 +4,10 @@ import { tap, catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { ToastService } from '../services/toast.service';
 import { NotificationService } from '../services/notification.service';
-import { NotificationResponse } from '../models/notification.model';
+import { ContextService } from '../services/context.service';
 
 export const notificationInterceptor: HttpInterceptorFn = (req, next) => {
-    if (req.url.includes('/messages/configuration')) {
+    if (req.url.includes('/messages')) {
         return next(req);
     }
 
@@ -17,19 +17,46 @@ export const notificationInterceptor: HttpInterceptorFn = (req, next) => {
 
     const toastService = inject(ToastService);
     const notificationService = inject(NotificationService);
+    const contextService = inject(ContextService);
+
 
     return next(req).pipe(
         tap(event => {
             if (event instanceof HttpResponse) {
-                console.log(event,'hooalal')
+                const context = contextService.getCurrentContext();
 
                 const payload = {
-                    systemId: 3,
-                    companyId: 3,
-                    countryId: 3,
+                    ...context,
                     name: "Éxito"
                 };
 
+                if (payload.companyId !== 0) {
+                    notificationService.getNotificationByInfo(payload).subscribe({
+                        next: (res: any) => {
+                            toastService.triggerAlert({
+                                color: res.color,
+                                name: res.message,
+                                allowClose: res.allowClose || null,
+                                durationSeconds: res.displayDuration || 5
+                            });
+                        }
+                    });
+                } else {
+
+                }
+            }
+        }),
+        catchError((error: HttpErrorResponse) => {
+
+            const errorName = error.status === 409 ? 'Informativo' : 'Error';
+            const context = contextService.getCurrentContext();
+
+            const payload = {
+                ...context,
+                name: errorName
+            };
+
+            if (payload.companyId !== 0) {
                 notificationService.getNotificationByInfo(payload).subscribe({
                     next: (res: any) => {
                         toastService.triggerAlert({
@@ -38,36 +65,14 @@ export const notificationInterceptor: HttpInterceptorFn = (req, next) => {
                             allowClose: res.allowClose || null,
                             durationSeconds: res.displayDuration || 5
                         });
+                    },
+                    error: () => {
                     }
                 });
             }
-        }),
-        catchError((error: HttpErrorResponse) => {
-
-            const errorName = error.status === 409 ? 'Informativo' : 'Error';
-
-            const payload = {
-                systemId: 3,
-                companyId: 3,
-                countryId: 3,
-                name: errorName
-            };
-
-            notificationService.getNotificationByInfo(payload).subscribe({
-                next: (res: any) => {
-                    toastService.triggerAlert({
-                        color: res.color,
-                        name: res.message,
-                        allowClose: res.allowClose || null,
-                        durationSeconds: res.displayDuration || 5
-                    });
-                },
-                error: () => {
-                }
-            });
 
             return throwError(() => error);
-            
+
         })
     );
 };

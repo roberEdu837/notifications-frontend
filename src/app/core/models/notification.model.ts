@@ -38,7 +38,7 @@ export interface NotificationInfoRequest {
   companyId: number;
   countryId: number;
   systemId: number;
-  name: string;
+  name?: string;
 }
 
 export const INITIAL_NOTIFICATION_VALUES = {

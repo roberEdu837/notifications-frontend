@@ -10,6 +10,13 @@ export interface AlertaJson {
     allowClose?: boolean;
 }
 
+export const DEFAULT_ALERTS: Record<string, AlertaJson> = {
+    success: { name: 'Registro exitoso', color: 'success', durationSeconds: 4 },
+    error: { name: 'Ocurrió un error en el sistema, intenta más tarde', color: 'danger', durationSeconds: 6, allowClose: true },
+    warning: { name: 'warning', color: 'warning', durationSeconds: 5, allowClose: true },
+    info: { name: 'La información que intentas guardar ya existe', color: 'info', durationSeconds: 4 }
+};
+
 @Service()
 export class ToastService {
     private toastr = inject(ToastrService);

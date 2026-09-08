@@ -5,7 +5,7 @@ import { NotificationService } from "../../../core/services/notification.service
 import { CatalogItem } from "../../../core/models/catalog.model";
 import { MessageType } from "../../../core/models/message-types.model";
 import { INITIAL_NOTIFICATION_VALUES, NotificationItem } from "../../../core/models/notification.model";
-import { ToastService } from "../../../core/services/toast.service";
+import { DEFAULT_ALERTS, ToastService } from "../../../core/services/toast.service";
 import { forceCloseModal } from "../../../core/helpers/modal.helper";
 
 @Component({
@@ -18,6 +18,7 @@ export class NotificationFormComponent {
     private readonly notificationService = inject(NotificationService);
     private readonly toastService = inject(ToastService);
     private readonly fb = inject(FormBuilder);
+
 
     countries = input.required<CatalogItem[]>();
     companies = input.required<CatalogItem[]>();
@@ -43,7 +44,6 @@ export class NotificationFormComponent {
 
     constructor() {
         effect(() => {
-            console.log(this.notificationData())
             const data = this.notificationData();
             if (data) {
                 this.notificationForm.patchValue(data);
@@ -71,10 +71,16 @@ export class NotificationFormComponent {
             : this.notificationService.createNotification(formValues);
 
         request$.subscribe({
-            next: () => {
+            next: (data:any) => {
+                console.log(data)
                 this.resetFormState();
                 this.loadNotifications.emit();
                 forceCloseModal("createNotificationModal");
+                this.toastService.triggerAlert({
+                    color: 'success',
+                    name: `Registro exitoso - Folio: ${data.folio}`,
+                    durationSeconds: 10
+                });
             },
             error: () => {
                 this.isSubmitting.set(false);

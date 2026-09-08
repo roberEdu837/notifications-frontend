@@ -23,6 +23,7 @@ export class NotificationsComponent implements OnInit {
     private readonly notificationService = inject(NotificationService);
     private readonly catalogService = inject(CatalogService);
     private readonly cdr = inject(ChangeDetectorRef);
+      private readonly toastService = inject(ToastService);
 
     private modalElement: HTMLElement | null = null;
 
@@ -109,13 +110,16 @@ export class NotificationsComponent implements OnInit {
     }
 
     deleteNotification(folio: number): void {
-        const confirmation = confirm('¿Estás seguro de que deseas eliminar esta notificación?');
-        if (!confirmation) return;
-
+        
         this.notificationService.deleteLogicalNotification(folio).subscribe({
             next: () => {
                 this.notifications.set(this.notifications().filter(n => n.folio !== folio));
                 this.cdr.detectChanges();
+                 this.toastService.triggerAlert({
+                    color: 'success',
+                    name: `Borrado exitoso`,
+                    durationSeconds: 10
+                });
             },
             error: (err) => {
                 console.error('Error al eliminar la notificación:', err);
