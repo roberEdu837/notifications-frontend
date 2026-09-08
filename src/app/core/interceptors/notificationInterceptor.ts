@@ -48,7 +48,7 @@ export const notificationInterceptor: HttpInterceptorFn = (req, next) => {
         }),
         catchError((error: HttpErrorResponse) => {
 
-            const errorName = error.status === 409 ? 'Informativo' : 'Error';
+            const errorName = error.status === 409 ? 'Precaución/Advertencia' : 'Error';
             const context = contextService.getCurrentContext();
 
             const payload = {
