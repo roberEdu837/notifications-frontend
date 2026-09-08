@@ -13,7 +13,7 @@ export const routes: Routes = [
   },
   {
    path:'simulator',
-   loadComponent:() => import('./features/simulator/simulator.componen').then(m => m.SimulatorComponent)
+   loadComponent:() => import('./features/simulator/simulator.component').then(m => m.SimulatorComponent)
   },   
   {
     path: '',

@@ -23,7 +23,6 @@ export class NotificationsComponent implements OnInit {
     private readonly notificationService = inject(NotificationService);
     private readonly catalogService = inject(CatalogService);
     private readonly cdr = inject(ChangeDetectorRef);
-    private toastService = inject(ToastService);
 
     private modalElement: HTMLElement | null = null;
 
@@ -34,6 +33,9 @@ export class NotificationsComponent implements OnInit {
     isLoadingCatalogs = signal<boolean>(false);
     selectedNotification = signal<NotificationItem | null>(null);
     statusFilter = signal<string>('A');
+    notifications = signal<NotificationItem[]>([]);
+    isLoading = signal<boolean>(false);
+    errorMessage: string = '';
 
 
     openEditModal(notification: NotificationItem): void {
@@ -43,9 +45,6 @@ export class NotificationsComponent implements OnInit {
         this.selectedNotification.set(notification);
     }
 
-    notifications = signal<NotificationItem[]>([]);
-    isLoading = signal<boolean>(false);
-    errorMessage: string = '';
 
     ngOnInit(): void {
         this.loadNotifications();
@@ -121,20 +120,10 @@ export class NotificationsComponent implements OnInit {
                 this.cdr.detectChanges();
             },
             error: (err) => {
-                // this.toastService.triggerAlert({
-                //     name: 'Borrado exitoso',
-                //     color: 'danger',
-                //     durationSeconds: 15
-                // });
                 console.error('Error al eliminar la notificación:', err);
                 this.cdr.detectChanges();
             }
         })
-        // this.toastService.triggerAlert({
-        //     name: 'Registro exitoso',
-        //     color: 'success',
-        //     durationSeconds: 15
-        // });
     }
 
     filteredNotifications = computed(() => {
