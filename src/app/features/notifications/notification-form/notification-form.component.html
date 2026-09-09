@@ -38,16 +38,22 @@
     </div>
 
     <!-- Tipo de Mensaje -->
-    <div class="mb-3">
-      <label class="form-label fw-semibold small text-muted mb-1">Tipo de Mensaje</label>
-      <select class="form-select py-2 rounded-3" formControlName="messageTypeId"
+  <div class="mb-3">
+    <label class="form-label fw-semibold small text-muted mb-1">Tipo de Mensaje</label>
+    <select class="form-select py-2 rounded-3" formControlName="messageTypeId"
         [class.is-invalid]="notificationForm.get('messageTypeId')?.touched && notificationForm.get('messageTypeId')?.invalid">
         <option value="">Selecciona un tipo de mensaje...</option>
         @for (item of messageTypes(); track item.id) {
-        <option [value]="item.id">{{ item.name }}</option>
+            <option [value]="item.id">
+                @if (item.color === 'success') { 🟢 }
+                @else if (item.color === 'warning') { 🟠 }
+                @else if (item.color === 'danger') { 🔴 }
+                @else if (item.color === 'info') { 🔵 }
+                {{ item.name }}
+            </option>
         }
-      </select>
-    </div>
+    </select>
+</div>
 
     <!-- Mensaje -->
     <div class="mb-3">
