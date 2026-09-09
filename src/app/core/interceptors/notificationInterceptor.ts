@@ -58,7 +58,6 @@ export const notificationInterceptor: HttpInterceptorFn = (req, next) => {
 
                 authService.logout();
 
-
                 return throwError(() => error);
             }
 

@@ -28,7 +28,8 @@
                     <td>{{ lawyer.name }}</td>
                     <td>{{ lawyer.email }}</td>
                     <td>
-                        <button class="btn btn-sm btn-outline-secondary" title="Enviar correo">
+                        <button class="btn btn-sm btn-outline-secondary" title="Enviar correo"
+                            [disabled]="!configComp.isActionEnabled()" (click)="sendInformationNotification()">
                             <i class="bi bi-envelope-fill"></i>
                         </button>
                     </td>
