@@ -1,7 +1,7 @@
 <form [formGroup]="simulatorForm" (ngSubmit)="onSubmit()" class="d-flex flex-column gap-3">
     <div class="modal-body">
-      <div class="row">
-      <div class="col">
+      <div class="row g-3">
+      <div class="col-12">
         <label class="form-label fw-semibold">Nombre completo</label>
         <input type="text" class="form-control" formControlName="name" [ngClass]="{'is-invalid': simulatorForm.get('name')?.invalid && simulatorForm.get('name')?.touched}">
         
@@ -10,10 +10,27 @@
             <div class="invalid-feedback">El nombre completo es obligatorio.</div>
           }
           @if (simulatorForm.get('name')?.hasError('minlength')) {
-            <div class="invalid-feedback">Debe tener al menos 3 caracteres.</div>
+            <div class="invalid-feedback">Debe tener al menos 5 caracteres.</div>
           }
           @if (simulatorForm.get('name')?.hasError('maxlength')) {
             <div class="invalid-feedback">No puede superar los 50 caracteres.</div>
+          }
+        }
+      </div>
+
+      <div class="col-12">
+        <label class="form-label fw-semibold">Correo Electrónico</label>
+        <input type="email" class="form-control" formControlName="email" [ngClass]="{'is-invalid': simulatorForm.get('email')?.invalid && simulatorForm.get('email')?.touched}" placeholder="correo@ejemplo.com">
+        
+        @if (simulatorForm.get('email')?.touched) {
+          @if (simulatorForm.get('email')?.hasError('required')) {
+            <div class="invalid-feedback">El correo es obligatorio.</div>
+          }
+          @if (simulatorForm.get('email')?.hasError('email')) {
+            <div class="invalid-feedback">Ingresa un formato de correo válido.</div>
+          }
+          @if (simulatorForm.get('email')?.hasError('maxlength')) {
+            <div class="invalid-feedback">Máximo 50 caracteres permitidos.</div>
           }
         }
       </div>
@@ -21,7 +38,7 @@
     </div>
     <div class="modal-footer">
     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-    <button type="submit" class="btn btn-primary" [disabled]="!isActionEnabled()" >
+    <button type="submit" class="btn btn-primary">
       @if (isSubmitting()) {
       <span class="spinner-border spinner-border-sm me-1"></span> Guardando...
       } @else {

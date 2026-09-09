@@ -10,7 +10,6 @@ import { SimulatorFormConfiguration } from './simulator-form-configuration/simul
   standalone: true,
   imports: [CommonModule,SimulatorFormComponent,SimulatorFormConfiguration],
   templateUrl: './simulator.component.html',
-  styleUrl: './simulator.component.css'
 })
 export class SimulatorComponent {
   private readonly lawyersService = inject(LawyersService);

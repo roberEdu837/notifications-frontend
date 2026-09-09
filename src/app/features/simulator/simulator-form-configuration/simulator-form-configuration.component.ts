@@ -5,18 +5,18 @@ import { CatalogService } from '../../../core/services/catalog.service';
 import { ContextService } from '../../../core/services/context.service';
 import { CatalogItem } from '../../../core/models/catalog.model';
 import { forkJoin } from 'rxjs';
+import { ToastService } from '../../../core/services/toast.service';
 
 @Component({
   imports: [CommonModule, ReactiveFormsModule],
   selector: 'app-simulator-form-configuration',
-  styleUrl: './simulator-form-configuration.component.css',
   templateUrl: './simulator-form-configuration.component.html',
 })
 export class SimulatorFormConfiguration implements OnInit {
   private readonly fb = inject(FormBuilder);
   private readonly catalogService = inject(CatalogService);
   private readonly contextService = inject(ContextService);
-
+  private readonly toastService = inject(ToastService)
   private modalElement: HTMLElement | null = null;
 
   countries = signal<CatalogItem[]>([]);
@@ -39,17 +39,22 @@ export class SimulatorFormConfiguration implements OnInit {
     this.modalElement = document.getElementById('simulatorModal');
   }
 
-  onSubmit(): void {
-    if (this.simulatorConfigForm.invalid) {
-      this.simulatorConfigForm.markAllAsTouched();
-      return;
+onSubmit(): void {
+        if (this.simulatorConfigForm.invalid) {
+            this.simulatorConfigForm.markAllAsTouched();
+            return;
+        }
+
+        const formValues = this.simulatorConfigForm.getRawValue();
+        this.contextService.setCurrentContext(formValues);
+        this.isActionEnabled.set(true);
+
+        this.toastService.triggerAlert({
+            color: 'info',
+            name: 'Configuración asignada correctamente',
+            durationSeconds: 5
+        });
     }
-
-    const formValues = this.simulatorConfigForm.getRawValue();
-    this.contextService.setCurrentContext(formValues);
-    this.isActionEnabled.set(true);
-  }
-
   loadCatalogs(): void {
     if (this.countries().length > 0) return;
 
