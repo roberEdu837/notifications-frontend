@@ -3,18 +3,18 @@ import { CommonModule } from '@angular/common';
 import { LawyersService } from '../../core/services/lawyers.service';
 import { LawyersResponse } from '../../core/models/lawyers.model';
 import { SimulatorFormComponent } from './simulator-form/simulator-form.component';
+import { SimulatorFormConfiguration } from './simulator-form-configuration/simulator-form-configuration.component';
 
 @Component({
   selector: 'app-simulator',
   standalone: true,
-  imports: [CommonModule,SimulatorFormComponent],
+  imports: [CommonModule,SimulatorFormComponent,SimulatorFormConfiguration],
   templateUrl: './simulator.component.html',
   styleUrl: './simulator.component.css'
 })
 export class SimulatorComponent {
   private readonly lawyersService = inject(LawyersService);
   private readonly cdr = inject(ChangeDetectorRef);
-  private modalElement: HTMLElement | null = null;
 
   lawyers = signal<LawyersResponse[]>([]);
   isLoading = signal<boolean>(false);

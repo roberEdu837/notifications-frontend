@@ -2,14 +2,13 @@ import { Component, inject, OnInit, ChangeDetectorRef, signal, computed } from "
 import { CommonModule } from "@angular/common";
 import { NotificationService } from "../../core/services/notification.service";
 import { NotificationItem } from "../../core/models/notification.model";
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
+import { ReactiveFormsModule } from "@angular/forms";
 import { CatalogService } from "../../core/services/catalog.service";
 import { CatalogItem } from "../../core/models/catalog.model";
 import { forkJoin } from "rxjs";
 import { MessageType } from "../../core/models/message-types.model";
 import { NotificationFormComponent } from "./notification-form/notification-form.component";
-import { AlertaJson, ToastService } from "../../core/services/toast.service";
-
+import { ToastService } from "../../core/services/toast.service";
 
 @Component({
     selector: 'app-notifications',
@@ -39,17 +38,9 @@ export class NotificationsComponent implements OnInit {
     isLoading = signal<boolean>(false);
     errorMessage: string = '';
 
-
-    openEditModal(notification: NotificationItem): void {
-        if (this.countries().length === 0) {
-            this.loadCatalogs();
-        }
-        this.selectedNotification.set(notification);
+    ngOnInit(): void { 
+        this.loadNotifications(); 
     }
-
-
-    ngOnInit(): void { this.loadNotifications(); }
-
 
     loadNotifications(): void {
         this.isLoading.set(true);
@@ -68,6 +59,13 @@ export class NotificationsComponent implements OnInit {
         });
     }
 
+    openEditModal(notification: NotificationItem): void {
+        if (this.countries().length === 0) {
+            this.loadCatalogs();
+        }
+        this.selectedNotification.set(notification);
+    }
+
     ngAfterViewInit(): void {
         this.modalElement = document.getElementById('createNotificationModal');
 
@@ -83,7 +81,6 @@ export class NotificationsComponent implements OnInit {
             });
         }
     }
-
 
     loadCatalogs(): void {
         if (this.countries().length > 0) return;
@@ -111,11 +108,10 @@ export class NotificationsComponent implements OnInit {
     }
 
     deleteNotification(folio: number): void {
-
         this.notificationService.deleteLogicalNotification(folio).subscribe({
             next: () => {
-                this.notifications.set(this.notifications().filter(n => n.folio !== folio));
-                this.cdr.detectChanges();
+               
+                this.loadNotifications();
                 this.toastService.triggerAlert({
                     color: 'success',
                     name: `Borrado exitoso`,
@@ -126,9 +122,8 @@ export class NotificationsComponent implements OnInit {
                 console.error('Error al eliminar la notificación:', err);
                 this.cdr.detectChanges();
             }
-        })
+        });
     }
-
 
     filteredNotifications = computed(() => {
         const status = this.statusFilter();
@@ -141,8 +136,4 @@ export class NotificationsComponent implements OnInit {
             return matchesStatus && matchesFolio;
         });
     });
-
-
-
-
 }
