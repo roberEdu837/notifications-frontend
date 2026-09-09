@@ -1,14 +1,21 @@
-<app-simulator-form-configuration #configComp></app-simulator-form-configuration>
+<app-simulator-form-configuration></app-simulator-form-configuration>
 <div class="container py-4">
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <h3 class="fw-bold m-0">Abogados</h3>
+        <div class="d-flex align-items-center gap-3">
+            <div class="bg-orange-subtle text-orange rounded-3 d-flex align-items-center justify-content-center shadow-sm"
+                style="width: 48px; height: 48px;">
+                <i class="bi bi-bell-fill fs-4"></i>
+            </div>
+            <div>
+                <h3 class="fw-bold m-0 text-dark">Abogados</h3>
+                <span class="text-muted small">Gestiona y administra los avisos del sistema</span>
+            </div>
+        </div>
 
         <button
             class="btn btn-orange rounded-pill px-4 py-2 d-inline-flex align-items-center gap-2 shadow-sm fw-semibold"
-            [disabled]="!configComp.isActionEnabled()"
-            [attr.data-bs-toggle]="configComp.isActionEnabled() ? 'modal' : null"
-            [attr.data-bs-target]="configComp.isActionEnabled() ? '#simulatorModal' : null">
-            <i class="bi bi-plus-lg"></i> 
+            data-bs-toggle="modal" data-bs-target="#simulatorModal">
+            <i class="bi bi-plus-lg"></i>
         </button>
     </div>
 
@@ -31,8 +38,8 @@
                     <td class="text-center align-middle">
                         <button
                             class="btn btn-light btn-sm rounded-circle d-inline-flex align-items-center justify-content-center shadow-sm text-secondary"
-                            style="width: 36px; height: 36px;" [disabled]="!configComp.isActionEnabled()"
-                            (click)="sendInformationNotification()" title="Enviar correo">
+                            style="width: 36px; height: 36px;" (click)="sendInformationNotification()"
+                            title="Enviar correo">
                             <i class="bi bi-envelope-fill"></i>
                         </button>
                     </td>

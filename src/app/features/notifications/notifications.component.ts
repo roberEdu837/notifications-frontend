@@ -1,7 +1,7 @@
 import { Component, inject, OnInit, ChangeDetectorRef, signal, computed } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { NotificationService } from "../../core/services/notification.service";
-import { NotificationItem } from "../../core/models/notification.model";
+import { NotificationColor, NotificationItem } from "../../core/models/notification.model";
 import { ReactiveFormsModule } from "@angular/forms";
 import { CatalogService } from "../../core/services/catalog.service";
 import { CatalogItem } from "../../core/models/catalog.model";
@@ -113,8 +113,8 @@ export class NotificationsComponent implements OnInit {
                
                 this.loadNotifications();
                 this.toastService.triggerAlert({
-                    color: 'success',
-                    name: `Borrado exitoso`,
+                    color: NotificationColor.SUCCESS,
+                    message: `Borrado exitoso`,
                     durationSeconds: 10
                 });
             },

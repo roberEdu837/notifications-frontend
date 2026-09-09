@@ -2,20 +2,9 @@ import { Injectable, RendererFactory2, Service, inject } from '@angular/core';
 import { Router, NavigationStart } from '@angular/router';
 import { ToastrService, IndividualConfig } from 'ngx-toastr';
 import { filter } from 'rxjs';
+import { AlertJson, NotificationColor } from '../models/notification.model';
 
-export interface AlertaJson {
-    name: string;
-    color: 'success' | 'danger' | 'warning' | 'info';
-    durationSeconds?: number;
-    allowClose?: boolean;
-}
 
-export const DEFAULT_ALERTS: Record<string, AlertaJson> = {
-    success: { name: 'Registro exitoso', color: 'success', durationSeconds: 4 },
-    error: { name: 'Ocurrió un error en el sistema, intenta más tarde', color: 'danger', durationSeconds: 6, allowClose: true },
-    warning: { name: 'warning', color: 'warning', durationSeconds: 5, allowClose: true },
-    info: { name: 'La información que intentas guardar ya existe', color: 'info', durationSeconds: 4 }
-};
 
 @Service()
 export class ToastService {
@@ -39,11 +28,13 @@ export class ToastService {
         });
     }
 
-    triggerAlert(info: AlertaJson) {
+    triggerAlert(info: AlertJson) {
         this.clearActive();
 
-        let timeout = info.durationSeconds !== undefined ? info.durationSeconds * 1000 : undefined;
-        let closeBtn = info.allowClose ?? false;
+        let timeout = (info.durationSeconds !== undefined && info.durationSeconds !== null)
+            ? info.durationSeconds * 1000
+            : undefined; 
+            let closeBtn = info.allowClose ?? false;
 
         const opciones: Partial<IndividualConfig> = {
             timeOut: timeout,
@@ -54,16 +45,16 @@ export class ToastService {
         let toastRef;
         switch (info.color) {
             case 'success':
-                toastRef = this.toastr.success(info.name, 'Éxito', opciones);
+                toastRef = this.toastr.success(info.message, 'Éxito', opciones);
                 break;
             case 'danger':
-                toastRef = this.toastr.error(info.name, 'Error', opciones);
+                toastRef = this.toastr.error(info.message, 'Error', opciones);
                 break;
             case 'warning':
-                toastRef = this.toastr.warning(info.name, 'Precaución', opciones);
+                toastRef = this.toastr.warning(info.message, 'Precaución', opciones);
                 break;
             default:
-                toastRef = this.toastr.info(info.name, 'Información', opciones);
+                toastRef = this.toastr.info(info.message, 'Información', opciones);
                 break;
         }
 

@@ -6,6 +6,7 @@ import { ContextService } from '../../../core/services/context.service';
 import { CatalogItem } from '../../../core/models/catalog.model';
 import { forkJoin } from 'rxjs';
 import { ToastService } from '../../../core/services/toast.service';
+import { NotificationColor } from '../../../core/models/notification.model';
 
 @Component({
   imports: [CommonModule, ReactiveFormsModule],
@@ -23,7 +24,6 @@ export class SimulatorFormConfiguration implements OnInit {
   companies = signal<CatalogItem[]>([]);
   systems = signal<CatalogItem[]>([]);
   isLoadingCatalogs = signal<boolean>(false);
-  isActionEnabled = signal<boolean>(false);
 
   simulatorConfigForm: FormGroup = this.fb.group({
     companyId: ['', Validators.required],
@@ -47,11 +47,10 @@ onSubmit(): void {
 
         const formValues = this.simulatorConfigForm.getRawValue();
         this.contextService.setCurrentContext(formValues);
-        this.isActionEnabled.set(true);
 
         this.toastService.triggerAlert({
-            color: 'info',
-            name: 'Configuración asignada correctamente',
+            color: NotificationColor.INFO,
+            message: 'Configuración asignada correctamente',
             durationSeconds: 5
         });
     }

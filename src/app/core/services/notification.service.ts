@@ -1,6 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
-import { NotificationInfoRequest, NotificationItem, NotificationRequest } from "../models/notification.model";
+import { AlertJson, NotificationInfoRequest, NotificationItem, NotificationRequest, NotificationResponse } from "../models/notification.model";
+import { map, Observable } from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -24,10 +25,18 @@ export class NotificationService {
     return this.http.patch(`/messages/${folio}/delete`, {});
   }
 
-  getNotificationByInfo(config: NotificationInfoRequest) {
-    return this.http.post(`/messages/configuration`, config);
-
-  }
+getNotificationByInfo(config: NotificationInfoRequest): Observable<AlertJson> {
+  return this.http.post<NotificationResponse>(`/messages/configuration`, config).pipe(
+    map((response: NotificationResponse): AlertJson => {
+      return {
+        color: response.color,
+        message: response.message,
+        allowClose: response?.allowClose ?? false,
+        durationSeconds: response?.displayDuration ?? null
+      };
+    })
+  );
+}
 
 
 }

@@ -56,7 +56,7 @@ private readonly notificationService = inject(NotificationService);
           if (res) {
             this.toastService.triggerAlert({
               color: res.color,
-              name: res.message,
+              message: res.message,
               allowClose: res.allowClose || null,
               durationSeconds: res.displayDuration || 5
             });

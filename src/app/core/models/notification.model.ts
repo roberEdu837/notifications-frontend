@@ -1,3 +1,18 @@
+export enum NotificationColor {
+  SUCCESS = 'success',
+  DANGER = 'danger',
+  WARNING = 'warning',
+  INFO = 'info'
+}
+
+export enum NotificationTypeName {
+  EXITO = 'Éxito',
+  INFORMATIVO = 'Informativo',
+  PRECAUCION = 'Precaución/Advertencia',
+  ERROR = 'Error',
+  RELOGIN = 'Redirigir a Login'
+}
+
 export interface NotificationItem {
   folio: number;
   companyId: number;
@@ -27,11 +42,11 @@ export interface NotificationRequest {
 }
 
 export interface NotificationResponse{
-  messageTypeName:string;
+  messageTypeName:NotificationTypeName;
   message: string;
   displayDuration?:number | null;
   allowClose?:boolean;
-  color: 'success' | 'danger' | 'warning' | 'info';
+  color: NotificationColor;
 }
 
 export interface NotificationInfoRequest {
@@ -39,6 +54,21 @@ export interface NotificationInfoRequest {
   countryId: number;
   systemId: number;
   name?: string;
+}
+
+export interface NotificationConfig {
+  name: NotificationTypeName;
+  color: NotificationColor;
+  durationSeconds?: number | null;
+  allowClose?: boolean;
+  message: string;
+}
+
+export interface AlertJson {
+    message: string;
+    color: NotificationColor;
+    durationSeconds?: number | null;
+    allowClose?: boolean;
 }
 
 export const INITIAL_NOTIFICATION_VALUES = {

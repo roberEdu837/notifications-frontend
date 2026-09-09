@@ -4,6 +4,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
 import { ToastService } from '../../core/services/toast.service';
+import { NotificationColor } from '../../core/models/notification.model';
 
 @Component({
   selector: 'app-login',
@@ -43,13 +44,12 @@ export class LoginComponent {
 
         if (err.status === 401 || err.status === 403) {
           this.toastService.triggerAlert({
-            color: 'danger',
-            name: "Usuario o contraseña incorrectos",
+            color: NotificationColor.DANGER,
+            message: "Usuario o contraseña incorrectos",
             allowClose: true || null,
           });
-        this.isLoading.set(false)
+          this.isLoading.set(false)
         }
-
 
       }
     });

@@ -4,8 +4,8 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from "@angula
 import { NotificationService } from "../../../core/services/notification.service";
 import { CatalogItem } from "../../../core/models/catalog.model";
 import { MessageType } from "../../../core/models/message-types.model";
-import { INITIAL_NOTIFICATION_VALUES, NotificationItem } from "../../../core/models/notification.model";
-import { DEFAULT_ALERTS, ToastService } from "../../../core/services/toast.service";
+import { INITIAL_NOTIFICATION_VALUES, NotificationColor, NotificationItem } from "../../../core/models/notification.model";
+import {  ToastService } from "../../../core/services/toast.service";
 import { forceCloseModal } from "../../../core/helpers/modal.helper";
 
 @Component({
@@ -77,8 +77,8 @@ export class NotificationFormComponent {
                 this.loadNotifications.emit();
                 forceCloseModal("createNotificationModal");
                 this.toastService.triggerAlert({
-                    color: 'success',
-                    name: `Registro exitoso - Folio: ${data.folio}`,
+                    color: NotificationColor.SUCCESS,
+                    message: `Registro exitoso - Folio: ${data.folio}`,
                     durationSeconds: 10
                 });
             },
