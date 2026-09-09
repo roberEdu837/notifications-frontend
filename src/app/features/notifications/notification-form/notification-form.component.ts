@@ -4,8 +4,8 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from "@angula
 import { NotificationService } from "../../../core/services/notification.service";
 import { CatalogItem } from "../../../core/models/catalog.model";
 import { MessageType } from "../../../core/models/message-types.model";
-import { INITIAL_NOTIFICATION_VALUES, NotificationColor, NotificationItem } from "../../../core/models/notification.model";
-import {  ToastService } from "../../../core/services/toast.service";
+import { INITIAL_NOTIFICATION_VALUES, NotificationColor, NotificationItem, NotificationRequest } from "../../../core/models/notification.model";
+import { ToastService } from "../../../core/services/toast.service";
 import { forceCloseModal } from "../../../core/helpers/modal.helper";
 
 @Component({
@@ -39,7 +39,8 @@ export class NotificationFormComponent {
         messageTypeId: ['', [Validators.required]],
         message: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(100)]],
         displayDuration: [null, []],
-        status: ['A', [Validators.required]]
+        status: ['A', [Validators.required]],
+        allowClose: ['false', Validators.required]
     });
 
     constructor() {
@@ -65,14 +66,23 @@ export class NotificationFormComponent {
 
         const formValues = this.notificationForm.getRawValue();
         const currentData = this.notificationData();
+          const payload = {
+            ...formValues,
+            companyId: Number(formValues.companyId),
+            countryId: Number(formValues.countryId),
+            systemId: Number(formValues.systemId),
+            messageTypeId: Number(formValues.messageTypeId),
+            displayDuration: formValues.displayDuration ? Number(formValues.displayDuration) : null,
+            allowClose: String(formValues.allowClose) === 'true'
+        };
+
 
         const request$ = currentData
-            ? this.notificationService.updateNotification(currentData.folio, formValues)
-            : this.notificationService.createNotification(formValues);
+            ? this.notificationService.updateNotification(currentData.folio, payload)
+            : this.notificationService.createNotification(payload);
 
         request$.subscribe({
-            next: (data:any) => {
-                console.log(data)
+            next: (data: NotificationRequest) => {
                 this.resetFormState();
                 this.loadNotifications.emit();
                 forceCloseModal("createNotificationModal");

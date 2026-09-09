@@ -10,7 +10,7 @@ import { getCustomMappedConfig } from '../constants/simulator-configs';
 import { AlertJson, NotificationTypeName } from '../models/notification.model';
 
 export const notificationInterceptor: HttpInterceptorFn = (req, next) => {
-    if (req.url.includes('/messages') || !['POST', 'PUT', 'PATCH'].includes(req.method)) {
+    if (req.url.includes('/messages') ||req.url.includes('/auth') ||  !['POST', 'PUT', 'PATCH'].includes(req.method)) {
         return next(req);
     }
 

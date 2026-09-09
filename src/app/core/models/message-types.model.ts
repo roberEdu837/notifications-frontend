@@ -3,5 +3,4 @@ export interface MessageType {
     name: string;
     color: string;
     durationSeconds: number;
-    allowClose: boolean;
 }

@@ -27,11 +27,12 @@ export interface NotificationItem {
   displayDuration: number;
   status: string;
   createdAt: string;
-  allowClose?:boolean;
+  allowClose?: boolean;
 
 }
 
 export interface NotificationRequest {
+  folio?: number;
   companyId: number;
   countryId: number;
   systemId: number;
@@ -39,13 +40,14 @@ export interface NotificationRequest {
   message: string;
   displayDuration: number;
   status: string;
+  allowClose: boolean;
 }
 
-export interface NotificationResponse{
-  messageTypeName:NotificationTypeName;
+export interface NotificationResponse {
+  messageTypeName: NotificationTypeName;
   message: string;
-  displayDuration?:number | null;
-  allowClose?:boolean;
+  displayDuration?: number | null;
+  allowClose?: boolean;
   color: NotificationColor;
 }
 
@@ -65,10 +67,10 @@ export interface NotificationConfig {
 }
 
 export interface AlertJson {
-    message: string;
-    color: NotificationColor;
-    durationSeconds?: number | null;
-    allowClose?: boolean;
+  message: string;
+  color: NotificationColor;
+  durationSeconds?: number | null;
+  allowClose?: boolean;
 }
 
 export const INITIAL_NOTIFICATION_VALUES = {
@@ -78,5 +80,6 @@ export const INITIAL_NOTIFICATION_VALUES = {
   messageTypeId: '',
   message: '',
   status: 'A',
-  displayDuration: null
+  displayDuration: null,
+  allowClose: 'false'
 };
