@@ -38,8 +38,10 @@
         </select>
       </div>
 
-      <!-- Botón de Acción -->
-      <div class="col-12 d-flex justify-content-end mt-4">
+     <div class="col-12 d-flex justify-content-end gap-2 mt-4">
+        <button type="button" class="btn btn-outline-secondary rounded-pill px-4 py-2 d-inline-flex align-items-center justify-content-center" (click)="clearConfig()">
+          <i class="bi bi-x-circle me-2"></i> Limpiar
+        </button>
         <button type="submit" class="btn btn-orange rounded-pill px-4 py-2 d-inline-flex align-items-center justify-content-center">
           <i class="bi bi-gear-fill me-2"></i> Configurar
         </button>

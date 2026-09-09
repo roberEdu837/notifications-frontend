@@ -54,6 +54,21 @@ onSubmit(): void {
             durationSeconds: 5
         });
     }
+
+    clearConfig(): void {
+    this.contextService.clearContext();
+    this.simulatorConfigForm.reset({
+      companyId: '',
+      countryId: '',
+      systemId: ''
+    });
+
+    this.toastService.triggerAlert({
+      color: NotificationColor.INFO,
+      message: 'Configuración limpiada correctamente',
+      durationSeconds: 5
+    });
+  }
   loadCatalogs(): void {
     if (this.countries().length > 0) return;
 

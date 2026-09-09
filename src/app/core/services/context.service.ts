@@ -19,5 +19,11 @@ export class ContextService {
     localStorage.setItem('countryId', config.countryId.toString());
   }
 
+  clearContext(): void {
+    localStorage.removeItem('systemId');
+    localStorage.removeItem('companyId');
+    localStorage.removeItem('countryId');
+  }
+
 }
 
