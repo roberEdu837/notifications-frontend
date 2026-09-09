@@ -1,1 +1,10 @@
 @import 'ngx-toastr/toastr';
+.btn-orange {
+  background-color: #ff7a45;
+  border: none;
+  color: white;
+  border-radius: 12px;
+  font-weight: 600;
+  padding: 12px;
+  transition: background-color 0.2s ease;
+}

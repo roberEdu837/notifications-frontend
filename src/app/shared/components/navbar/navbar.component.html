@@ -1,16 +1,19 @@
 @if (!isLoginPage()) {
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4 shadow-sm">
+  <nav class="navbar navbar-expand-lg navbar-dark px-4 shadow-sm py-3" style="background-color: #ff7a45;">
     <div class="container-fluid">
-      <a class="navbar-brand fw-bold" routerLink="/notifications">
-        <i class="bi bi-bell-fill me-2 text-warning"></i>Sistema
+      <a class="navbar-brand fw-bold d-flex align-items-center gap-2 text-white" routerLink="/notifications">
+        <div class="bg-white rounded-3 d-flex align-items-center justify-content-center shadow-sm" style="width: 38px; height: 38px;">
+          <i class="bi bi-bell-fill fs-6" style="color: #ff7a45 !important;"></i>
+        </div>
+        <span>Sistema</span>
       </a>
 
       <div class="d-flex align-items-center gap-3">
-        <a routerLink="/simulator" class="btn btn-outline-light btn-sm d-flex align-items-center gap-1">
-          <i class="bi bi-play-circle"></i> Simulador
+        <a routerLink="/simulator" class="btn btn-light rounded-pill px-3 py-2 d-inline-flex align-items-center gap-2 text-dark fw-semibold shadow-sm">
+          <i class="bi bi-play-circle text-orange"></i> Simulador
         </a>
-        <button class="btn btn-outline-danger btn-sm d-flex align-items-center gap-1" (click)="onLogout()">
-          <i class="bi bi-box-arrow-right"></i> Cerrar Sesión
+        <button class="btn btn-dark rounded-pill px-3 py-2 d-inline-flex align-items-center gap-2 text-white fw-semibold shadow-sm border-0" style="background-color: rgba(0, 0, 0, 0.2);" (click)="onLogout()">
+          <i class="bi bi-box-arrow-right"></i> Salir
         </button>
       </div>
     </div>

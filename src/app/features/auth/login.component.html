@@ -1,35 +1,53 @@
-<div class="container d-flex justify-content-center align-items-center min-vh-100">
-  <div class="w-100" style="max-width: 360px;">
+<div class="container d-flex justify-content-center align-items-center min-vh-100 ">
+  <div class="card border-0 shadow-lg rounded-4 p-4 w-100" style="max-width: 400px;">
     
-    <h1 class="text-center fw-bold mb-4" style="font-size: 2rem;">Iniciar Sesión</h1>
+    <div class="text-center mb-4">
+      <div class="bg-orange-subtle text-orange rounded-3 d-inline-flex align-items-center justify-content-center shadow-sm mb-3" style="width: 52px; height: 52px;">
+        <i class="bi bi-shield-lock-fill fs-4 text-orange" style="color: #ff7a45 !important;"></i>
+      </div>
+      <h1 class="fw-bold text-dark fs-3 m-0">Bienvenido</h1>
+      <p class="text-muted small mt-1">Ingresa a tu cuenta para continuar</p>
+    </div>
 
     @if (errorMessage) {
-      <div class="alert alert-danger p-2 text-center mb-3" role="alert">
-        {{ errorMessage }}
+      <div class="alert alert-danger border-0 rounded-3 py-2 px-3 small text-center mb-3 shadow-sm" role="alert">
+        <i class="bi bi-exclamation-circle-fill me-1"></i> {{ errorMessage }}
       </div>
     }
 
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="d-flex flex-column gap-3">
       
       <div>
-        <input 
-          type="text" 
-          formControlName="username" 
-          placeholder="Enter your email or username"
-          class="form-control custom-input"
-        />
+        <label class="form-label small fw-semibold text-muted mb-1">Usuario o Correo</label>
+        <div class="input-group">
+          <span class="input-group-text bg-white border-end-0 rounded-start-3 text-muted ps-3">
+            <i class="bi bi-person-fill"></i>
+          </span>
+          <input 
+            type="text" 
+            formControlName="username" 
+            placeholder="Ingresa tu usuario"
+            class="form-control py-2 border-start-0 rounded-end-3 shadow-none"
+          />
+        </div>
         @if (loginForm.get('username')?.touched && loginForm.get('username')?.invalid) {
           <span class="text-danger small mt-1 d-block">El usuario es requerido.</span>
         }
       </div>
 
       <div>
-        <input 
-          type="password" 
-          formControlName="password" 
-          placeholder="Password"
-          class="form-control custom-input"
-        />
+        <label class="form-label small fw-semibold text-muted mb-1">Contraseña</label>
+        <div class="input-group">
+          <span class="input-group-text bg-white border-end-0 rounded-start-3 text-muted ps-3">
+            <i class="bi bi-lock-fill"></i>
+          </span>
+          <input 
+            type="password" 
+            formControlName="password" 
+            placeholder="••••••••"
+            class="form-control py-2 border-start-0 rounded-end-3 shadow-none"
+          />
+        </div>
         @if (loginForm.get('password')?.touched && loginForm.get('password')?.invalid) {
           <span class="text-danger small mt-1 d-block">La contraseña es requerida.</span>
         }
@@ -37,9 +55,10 @@
 
       <button 
         type="submit" 
-        class="btn btn-orange w-100 mt-2 d-flex justify-content-center align-items-center">
+        class="btn btn-orange rounded-pill w-100 py-2 mt-3 fw-semibold shadow-sm d-flex justify-content-center align-items-center"
+        [disabled]="isLoading()">
         @if (isLoading()) {
-          <span>Cargando...</span>
+          <span class="spinner-border spinner-border-sm me-2"></span> Cargando...
         } @else {
           <span>Iniciar Sesión</span>
         }

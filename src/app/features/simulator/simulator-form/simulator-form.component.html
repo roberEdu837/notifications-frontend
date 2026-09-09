@@ -1,9 +1,13 @@
 <form [formGroup]="simulatorForm" (ngSubmit)="onSubmit()" class="d-flex flex-column gap-3">
-    <div class="modal-body">
-      <div class="row g-3">
+  <div class="modal-body py-3">
+    <div class="row g-3">
+      
+      <!-- Nombre Completo -->
       <div class="col-12">
-        <label class="form-label fw-semibold">Nombre completo</label>
-        <input type="text" class="form-control" formControlName="name" [ngClass]="{'is-invalid': simulatorForm.get('name')?.invalid && simulatorForm.get('name')?.touched}">
+        <label class="form-label small fw-semibold text-muted mb-1">Nombre completo</label>
+        <input type="text" class="form-control py-2 rounded-3 shadow-none" formControlName="name" 
+               [ngClass]="{'is-invalid': simulatorForm.get('name')?.invalid && simulatorForm.get('name')?.touched}"
+               placeholder="Ej. Juan Pérez">
         
         @if (simulatorForm.get('name')?.touched) {
           @if (simulatorForm.get('name')?.hasError('required')) {
@@ -18,9 +22,12 @@
         }
       </div>
 
+      <!-- Correo Electrónico -->
       <div class="col-12">
-        <label class="form-label fw-semibold">Correo Electrónico</label>
-        <input type="email" class="form-control" formControlName="email" [ngClass]="{'is-invalid': simulatorForm.get('email')?.invalid && simulatorForm.get('email')?.touched}" placeholder="correo@ejemplo.com">
+        <label class="form-label small fw-semibold text-muted mb-1">Correo Electrónico</label>
+        <input type="email" class="form-control py-2 rounded-3 shadow-none" formControlName="email" 
+               [ngClass]="{'is-invalid': simulatorForm.get('email')?.invalid && simulatorForm.get('email')?.touched}" 
+               placeholder="correo@ejemplo.com">
         
         @if (simulatorForm.get('email')?.touched) {
           @if (simulatorForm.get('email')?.hasError('required')) {
@@ -34,15 +41,17 @@
           }
         }
       </div>
-  </div>
+
     </div>
-    <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-    <button type="submit" class="btn btn-primary">
+  </div>
+
+  <div class="modal-footer border-0 pt-0 pb-3 px-4">
+    <button type="button" class="btn btn-light rounded-pill px-4 py-2" data-bs-dismiss="modal">Cancelar</button>
+    <button type="submit" class="btn btn-orange rounded-pill px-4 py-2 d-inline-flex align-items-center justify-content-center">
       @if (isSubmitting()) {
-      <span class="spinner-border spinner-border-sm me-1"></span> Guardando...
+        <span class="spinner-border spinner-border-sm me-2"></span> Guardando...
       } @else {
-      Guardar
+        Guardar
       }
     </button>
   </div>

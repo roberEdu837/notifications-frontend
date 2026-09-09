@@ -3,11 +3,12 @@
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h3 class="fw-bold m-0">Abogados</h3>
 
-        <button class="btn btn-outline-primary d-flex align-items-center gap-2"
+        <button
+            class="btn btn-orange rounded-pill px-4 py-2 d-inline-flex align-items-center gap-2 shadow-sm fw-semibold"
             [disabled]="!configComp.isActionEnabled()"
             [attr.data-bs-toggle]="configComp.isActionEnabled() ? 'modal' : null"
             [attr.data-bs-target]="configComp.isActionEnabled() ? '#simulatorModal' : null">
-            <i class="bi bi-plus-lg"></i> Nuevo
+            <i class="bi bi-plus-lg"></i> 
         </button>
     </div>
 
@@ -15,21 +16,23 @@
         <table class="table table-hover align-middle mb-0">
             <thead class="table-light">
                 <tr>
-                    <th>Id</th>
-                    <th>Nombre</th>
-                    <th>Correo</th>
-                    <th>Acciones</th>
+                    <th>Folio</th>
+                    <th class="text-center align-middle">Nombre</th>
+                    <th class="text-center align-middle">Correo</th>
+                    <th class="text-center align-middle">Acciones</th>
                 </tr>
             </thead>
             <tbody>
                 @for (lawyer of lawyers(); track lawyer.id) {
                 <tr>
-                    <td class="fw-bold">#{{ lawyer.id }}</td>
-                    <td>{{ lawyer.name }}</td>
-                    <td>{{ lawyer.email }}</td>
-                    <td>
-                        <button class="btn btn-sm btn-outline-secondary" title="Enviar correo"
-                            [disabled]="!configComp.isActionEnabled()" (click)="sendInformationNotification()">
+                    <td class="fw-bold">{{ lawyer.id }}</td>
+                    <td class="text-center align-middle">{{ lawyer.name }}</td>
+                    <td class="text-center align-middle">{{ lawyer.email }}</td>
+                    <td class="text-center align-middle">
+                        <button
+                            class="btn btn-light btn-sm rounded-circle d-inline-flex align-items-center justify-content-center shadow-sm text-secondary"
+                            style="width: 36px; height: 36px;" [disabled]="!configComp.isActionEnabled()"
+                            (click)="sendInformationNotification()" title="Enviar correo">
                             <i class="bi bi-envelope-fill"></i>
                         </button>
                     </td>
@@ -46,19 +49,30 @@
         </table>
     </div>
 
-    <div class="modal fade" id="simulatorModal" tabindex="-1" aria-labelledby="modalTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title fw-bold" id="modalTitle">
-                        Nuevo Abogado
-                    </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    <div class="modal fade" id="simulatorModal" tabindex="-1" aria-labelledby="simulatorModalTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
+                <div class="modal-header border-0 pb-0 pt-4 px-4">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="bg-orange-subtle text-orange rounded-3 d-flex align-items-center justify-content-center"
+                            style="width: 42px; height: 42px;">
+                            <i class="bi bi-person-badge-fill fs-5"></i>
+                        </div>
+                        <div>
+                            <h5 class="modal-title fw-bold text-dark m-0" id="simulatorModalTitle">
+                                Nuevo Abogado
+                            </h5>
+                            <span class="text-muted small">Registra un nuevo perfil en el sistema</span>
+                        </div>
+                    </div>
+                    <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
                 </div>
 
-                <app-simulator-form (loadLawyers)="loadLawyers()">
-
-                </app-simulator-form>
+                <div class="modal-body px-4 py-3">
+                    <app-simulator-form (loadLawyers)="loadLawyers()">
+                    </app-simulator-form>
+                </div>
             </div>
         </div>
     </div>

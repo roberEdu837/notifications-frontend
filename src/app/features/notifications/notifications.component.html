@@ -1,26 +1,37 @@
 <div class="container py-4">
-  <div class="d-flex justify-content-between align-items-center mb-3">
-    <h3 class="fw-bold m-0">Notificaciones</h3>
-    <button class="btn btn-outline-primary d-flex align-items-center gap-2" (click)="selectedNotification.set(null)"
-      data-bs-toggle="modal" data-bs-target="#createNotificationModal">
-      <i class="bi bi-plus-lg"></i> Nuevo
-    </button>
+  <div class="d-flex justify-content-between align-items-center mb-4">
+  <div class="d-flex align-items-center gap-3">
+    <div class="bg-orange-subtle text-orange rounded-3 d-flex align-items-center justify-content-center shadow-sm" style="width: 48px; height: 48px;">
+      <i class="bi bi-bell-fill fs-4"></i>
+    </div>
+    <div>
+      <h3 class="fw-bold m-0 text-dark">Notificaciones</h3>
+      <span class="text-muted small">Gestiona y administra los avisos del sistema</span>
+    </div>
   </div>
+  
+ <button class="btn btn-orange rounded-pill px-4 py-2 d-inline-flex align-items-center gap-2 shadow-sm fw-semibold"
+        (click)="selectedNotification.set(null)" 
+        data-bs-toggle="modal"
+        data-bs-target="#createNotificationModal">
+  <i class="bi bi-plus-lg"></i> 
+</button>
+</div>
 
-  <div class="row mb-3">
-    <div class="col-md-3">
-      <label class="form-label small fw-semibold text-muted">Filtrar por Estado</label>
-      <select class="form-select form-select-sm" (change)="statusFilter.set($any($event.target).value)">
-        <option value="A">Activo</option>
-        <option value="B">Inactivo</option>
-      </select>
-    </div>
-    <div class="col-md-3">
-      <label class="form-label small fw-semibold text-muted">Buscar por Folio</label>
-      <input type="text" class="form-control form-control-sm" placeholder="Ej. 48"
-        (input)="folioFilter.set($any($event.target).value)">
-    </div>
+<div class="row g-3 mb-4 align-items-end">
+  <div class="col-12 col-sm-6 col-md-3">
+    <label class="form-label small fw-semibold text-muted mb-1">Filtrar por Estado</label>
+    <select class="form-select rounded-3 py-2 shadow-none" (change)="statusFilter.set($any($event.target).value)">
+      <option value="A">Activo</option>
+      <option value="B">Inactivo</option>
+    </select>
   </div>
+  <div class="col-12 col-sm-6 col-md-3">
+    <label class="form-label small fw-semibold text-muted mb-1">Buscar por Folio</label>
+    <input type="text" class="form-control rounded-3 py-2 shadow-none" placeholder="Ej. 48"
+      (input)="folioFilter.set($any($event.target).value)">
+  </div>
+</div>
 
   @if (isLoading()) {
   <div class="text-center py-5">
@@ -30,87 +41,111 @@
   }
 
   @if (!isLoading()) {
-    @if (filteredNotifications().length > 0) {
-      <div class="table-responsive bg-white rounded-3 shadow-sm border">
-        <table class="table table-hover align-middle mb-0">
-          <thead class="table-light">
-            <tr>
-              <th>Folio</th>
-              <th>Sistema</th>
-              <th>Empresa</th>
-              <th>País</th>
-              <th>Tipo de Mensaje</th>
-              <th>Permite Cerrar</th>
-              <th>Mensaje</th>
-              <th>Duración</th>
-              <th>Estado</th>
-              <th>Fecha Creación</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            @for (item of filteredNotifications(); track item.folio) {
-            <tr>
-              <td class="fw-bold">#{{ item.folio }}</td>
-              <td>{{ item.systemName }}</td>
-              <td>{{ item.companyName }}</td>
-              <td>{{ item.countryName }}</td>
-              <td>{{ item.messageTypeName }}</td>
-              <td>{{ item.allowClose? 'Si': 'No' }}</td>
-              <td class="text-wrap" style="max-width: 300px;">{{ item.message }}</td>
-              <td>{{ item.displayDuration !== null && item.displayDuration !== undefined ? item.displayDuration + 's' : '-' }}</td>
-              <td>
-                <span class="badge bg-secondary-subtle text-secondary border border-secondary-subtle">
-                  {{ item.status }}
-                </span>
-              </td>
-              <td class="text-muted small">
-                {{ item.createdAt | date:'short' }}
-              </td>
-              <td>
-                <button class="btn btn-sm btn-outline-primary d-flex align-items-center gap-1" data-bs-toggle="modal"
-                  data-bs-target="#createNotificationModal" (click)="openEditModal(item)">
-                  <i class="bi bi-pencil-fill"></i>
-                </button>
-                @if(item.status !== 'B'){
-                <button class="btn btn-sm btn-outline-danger d-flex align-items-center gap-1"
-                  (click)="deleteNotification(item.folio)">
-                  <i class="bi bi-trash-fill"></i>
-                </button>
-                }
-              </td>
-            </tr>
-            }
-          </tbody>
-        </table>
-      </div>
-    } @else {
-      <div class="text-center py-5 bg-white rounded-3 shadow-sm border">
-        <i class="bi bi-inbox fs-1 text-muted"></i>
-        <p class="text-muted mt-2 mb-0">No hay registros disponibles</p>
-      </div>
-    }
+  @if (filteredNotifications().length > 0) {
+  <div class="table-responsive bg-white rounded-3 shadow-sm border">
+    <table class="table table-hover align-middle mb-0">
+      <thead class="table-light">
+        <tr>
+          <th>Folio</th>
+          <th class="text-center align-middle">Sistema</th>
+          <th class="text-center align-middle">Empresa</th>
+          <th class="text-center align-middle">País</th>
+          <th class="text-center align-middle">Tipo</th>
+          <th class="text-center align-middle">Cierre</th>
+          <th class="text-center align-middle">Mensaje</th>
+          <th class="text-center align-middle">Duración</th>
+          <th class="text-center align-middle">Estado</th>
+          <th class="text-center align-middle">Fecha</th>
+          <th class="text-center align-middle">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (item of filteredNotifications(); track item.folio) {
+        <tr>
+          <td class="fw-bold">{{ item.folio }}</td>
+          <td class="text-center align-middle">{{ item.systemName }}</td>
+          <td class="text-center align-middle">{{ item.companyName }}</td>
+          <td class="text-center align-middle">{{ item.countryName }}</td>
+          <td class="text-center align-middle">{{ item.messageTypeName }}</td>
+          <td class="text-center align-middle">
+            <span class="badge d-inline-flex align-items-center gap-1 px-2 py-1"
+              [ngClass]="item.allowClose ? 'bg-success-subtle text-success border border-success-subtle' : 'bg-danger-subtle text-danger border border-danger-subtle'">
+              <i class="bi" [ngClass]="item.allowClose ? 'bi-check-circle-fill' : 'bi-x-circle-fill'"></i>
+              {{ item.allowClose ? 'Permite cerrar' : 'No permitible' }}
+            </span>
+          </td>
+          <td class="text-wrap" style="max-width: 300px;">{{ item.message }}</td>
+          <td class="text-center align-middle">{{ item.displayDuration !== null && item.displayDuration !== undefined ? item.displayDuration + 's' : '-'
+            }}</td>
+          <td>
+            <span class="badge"
+              [ngClass]="item.status === 'A' ? 'bg-success-subtle text-success border border-success-subtle' : 'bg-danger-subtle text-danger border border-danger-subtle'">
+              {{ item.status === 'A' ? 'Activo' : 'Inactivo' }}
+            </span>
+          </td>
+          <td class="text-muted small fw-normal">
+            {{ item.createdAt | date:'longDate':'':'es' }}
+          </td>
+          <td>
+            <div class="d-inline-flex align-items-center gap-1">
+              <button
+                class="btn btn-sm btn-light text-primary rounded-circle p-2 border-0 d-inline-flex align-items-center justify-content-center"
+                style="width: 32px; height: 32px;" data-bs-toggle="modal" data-bs-target="#createNotificationModal"
+                (click)="openEditModal(item)" title="Editar">
+                <i class="bi bi-pencil-square fs-6"></i>
+              </button>
+
+              @if(item.status !== 'B'){
+              <button
+                class="btn btn-sm btn-light text-danger rounded-circle p-2 border-0 d-inline-flex align-items-center justify-content-center"
+                style="width: 32px; height: 32px;" (click)="deleteNotification(item.folio)" title="Eliminar">
+                <i class="bi bi-trash fs-6"></i>
+              </button>
+              }
+            </div>
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+  } @else {
+  <div class="text-center py-5 bg-white rounded-3 shadow-sm border">
+    <i class="bi bi-inbox fs-1 text-muted"></i>
+    <p class="text-muted mt-2 mb-0">No hay registros disponibles</p>
+  </div>
+  }
   }
 </div>
 
 <div class="modal fade" id="createNotificationModal" tabindex="-1" aria-labelledby="modalTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title fw-bold" id="modalTitle">
-          @if (selectedNotification()) {
-          Editar Notificación
-          } @else {
-          Nueva Notificación
-          }
-        </h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
+      <div class="modal-header border-0 pb-0 pt-4 px-4">
+        <div class="d-flex align-items-center gap-3">
+          <div class="bg-orange-subtle text-orange rounded-3 d-flex align-items-center justify-content-center" style="width: 42px; height: 42px;">
+            <i class="bi bi-bell-fill fs-5"></i>
+          </div>
+          <div>
+            <h5 class="modal-title fw-bold text-dark m-0" id="modalTitle">
+              @if (selectedNotification()) {
+                Editar Notificación
+              } @else {
+                Nueva Notificación
+              }
+            </h5>
+            <span class="text-muted small">Completa los campos del sistema</span>
+          </div>
+        </div>
+        <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
 
-      <app-notification-form [countries]="countries()" [companies]="companies()" [systems]="systems()"
-        [messageTypes]="messageTypes()" [notificationData]="selectedNotification()"
-        (loadNotifications)="loadNotifications()">
-      </app-notification-form>
+      <div class="modal-body px-4 py-3">
+        <app-notification-form [countries]="countries()" [companies]="companies()" [systems]="systems()"
+          [messageTypes]="messageTypes()" [notificationData]="selectedNotification()"
+          (loadNotifications)="loadNotifications()">
+        </app-notification-form>
+      </div>
     </div>
   </div>
 </div>

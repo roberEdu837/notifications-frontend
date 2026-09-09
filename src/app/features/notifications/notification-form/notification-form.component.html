@@ -1,10 +1,10 @@
 <form [formGroup]="notificationForm" (ngSubmit)="onSubmit()" class="d-flex flex-column gap-3">
-  <div class="modal-body">
+  <div class="modal-body py-3">
 
     <!-- Empresa -->
     <div class="mb-3">
-      <label class="form-label fw-semibold">Empresa</label>
-      <select class="form-select" formControlName="companyId"
+      <label class="form-label fw-semibold small text-muted mb-1">Empresa</label>
+      <select class="form-select py-2 rounded-3" formControlName="companyId"
         [class.is-invalid]="notificationForm.get('companyId')?.touched && notificationForm.get('companyId')?.invalid">
         <option value="">Selecciona una empresa...</option>
         @for (item of companies(); track item.id) {
@@ -15,8 +15,8 @@
 
     <!-- País -->
     <div class="mb-3">
-      <label class="form-label fw-semibold">País</label>
-      <select class="form-select" formControlName="countryId"
+      <label class="form-label fw-semibold small text-muted mb-1">País</label>
+      <select class="form-select py-2 rounded-3" formControlName="countryId"
         [class.is-invalid]="notificationForm.get('countryId')?.touched && notificationForm.get('countryId')?.invalid">
         <option value="">Selecciona un país...</option>
         @for (item of countries(); track item.id) {
@@ -27,8 +27,8 @@
 
     <!-- Sistema -->
     <div class="mb-3">
-      <label class="form-label fw-semibold">Sistema</label>
-      <select class="form-select" formControlName="systemId"
+      <label class="form-label fw-semibold small text-muted mb-1">Sistema</label>
+      <select class="form-select py-2 rounded-3" formControlName="systemId"
         [class.is-invalid]="notificationForm.get('systemId')?.touched && notificationForm.get('systemId')?.invalid">
         <option value="">Selecciona un sistema...</option>
         @for (item of systems(); track item.id) {
@@ -39,8 +39,8 @@
 
     <!-- Tipo de Mensaje -->
     <div class="mb-3">
-      <label class="form-label fw-semibold">Tipo de Mensaje</label>
-      <select class="form-select" formControlName="messageTypeId"
+      <label class="form-label fw-semibold small text-muted mb-1">Tipo de Mensaje</label>
+      <select class="form-select py-2 rounded-3" formControlName="messageTypeId"
         [class.is-invalid]="notificationForm.get('messageTypeId')?.touched && notificationForm.get('messageTypeId')?.invalid">
         <option value="">Selecciona un tipo de mensaje...</option>
         @for (item of messageTypes(); track item.id) {
@@ -51,8 +51,8 @@
 
     <!-- Mensaje -->
     <div class="mb-3">
-      <label class="form-label fw-semibold">Mensaje</label>
-      <textarea class="form-control" rows="3" formControlName="message"
+      <label class="form-label fw-semibold small text-muted mb-1">Mensaje</label>
+      <textarea class="form-control py-2 rounded-3" rows="3" formControlName="message"
         [class.is-invalid]="notificationForm.get('message')?.touched && notificationForm.get('message')?.invalid"></textarea>
       @if (notificationForm.get('message')?.touched && notificationForm.get('message')?.invalid) {
       <div class="invalid-feedback">El mensaje es obligatorio (mínimo 5 y máximo 100 caracteres).</div> }
@@ -61,13 +61,13 @@
     <!-- Duración y Estado -->
     <div class="row">
       <div class="col-md-6 mb-3">
-        <label class="form-label fw-semibold">Duración (segundos)</label>
-        <input type="number" class="form-control" formControlName="displayDuration">
+        <label class="form-label fw-semibold small text-muted mb-1">Duración (segundos)</label>
+        <input type="number" class="form-control py-2 rounded-3" formControlName="displayDuration">
       </div>
 
       <div class="col-md-6 mb-3">
-        <label class="form-label fw-semibold">Estado</label>
-        <select class="form-select" formControlName="status">
+        <label class="form-label fw-semibold small text-muted mb-1">Estado</label>
+        <select class="form-select py-2 rounded-3" formControlName="status">
           <option value="A">Activo</option>
           <option value="B">Inactivo</option>
         </select>
@@ -75,13 +75,13 @@
     </div>
   </div>
 
-  <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-    <button type="submit" class="btn btn-primary" [disabled]="isSubmitting()">
+  <div class="modal-footer border-0 pt-0 pb-3 px-3">
+    <button type="button" class="btn btn-light rounded-pill px-4 py-2" data-bs-dismiss="modal">Cancelar</button>
+    <button type="submit" class="btn btn-orange rounded-pill px-4 py-2 d-inline-flex align-items-center justify-content-center" [disabled]="isSubmitting()">
       @if (isSubmitting()) {
-      <span class="spinner-border spinner-border-sm me-1"></span> Guardando...
+        <span class="spinner-border spinner-border-sm me-2"></span> Guardando...
       } @else {
-      Guardar
+        Guardar
       }
     </button>
   </div>
