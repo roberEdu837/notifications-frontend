@@ -7,36 +7,16 @@ export const NOTIFICATION_CONFIGURATIONS: NotificationConfig[] = [
     color: NotificationColor.SUCCESS,
     durationSeconds: 15,
     allowClose: false,
-    message: 'La operación se realizó correctamente'
-  },
-  {
-    name: NotificationTypeName.INFORMATIVO,
-    color: NotificationColor.INFO,
-    durationSeconds: 15,
-    allowClose: false,
-    message: 'Hemos enviado un token al correo electrónico ingresado'
-  },
-  {
-    name: NotificationTypeName.PRECAUCION,
-    color: NotificationColor.WARNING,
-    durationSeconds: 0,
-    allowClose: true,
-    message: 'La información que intentas guardar ya existe'
-  },
-  {
-    name: NotificationTypeName.RELOGIN,
-    color: NotificationColor.DANGER,
-    durationSeconds: 0,
-    allowClose: true,
-    message: 'Ocurrió un error en el sistema, intenta más tarde'
+    message: 'Registro exitoso'
   },
   {
     name: NotificationTypeName.ERROR,
-    color: NotificationColor.WARNING,
-    durationSeconds: 10,
-    allowClose: true,
-    message: 'Sesión expirada. Serás redirigido al login.'
-  }
+    color: NotificationColor.SUCCESS,
+    durationSeconds: 15,
+    allowClose: false,
+    message: 'Borrado exitoso'
+  },
+  
 ];
 
 export function getCustomMappedConfig(typeName: string): AlertJson | undefined {

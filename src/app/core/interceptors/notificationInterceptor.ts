@@ -6,7 +6,7 @@ import { ToastService } from '../services/toast.service';
 import { NotificationService } from '../services/notification.service';
 import { ContextService } from '../services/context.service';
 import { AuthService } from '../services/auth.service';
-import { getCustomMappedConfig } from '../constants/notification-configs';
+import { getCustomMappedConfig } from '../constants/simulator-configs';
 import { AlertJson, NotificationTypeName } from '../models/notification.model';
 
 export const notificationInterceptor: HttpInterceptorFn = (req, next) => {
