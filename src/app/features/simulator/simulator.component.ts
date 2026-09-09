@@ -7,11 +7,13 @@ import { SimulatorFormConfiguration } from './simulator-form-configuration/simul
 import { ContextService } from '../../core/services/context.service';
 import { ToastService } from '../../core/services/toast.service';
 import { NotificationService } from '../../core/services/notification.service';
+import { getCustomMappedConfig } from '../../core/constants/simulator-configs';
+import { NotificationTypeName } from '../../core/models/notification.model';
 
 @Component({
   selector: 'app-simulator',
   standalone: true,
-  imports: [CommonModule,SimulatorFormComponent,SimulatorFormConfiguration],
+  imports: [CommonModule, SimulatorFormComponent, SimulatorFormConfiguration],
   templateUrl: './simulator.component.html',
 })
 export class SimulatorComponent {
@@ -19,7 +21,7 @@ export class SimulatorComponent {
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly contextService = inject(ContextService);
   private readonly toastService = inject(ToastService);
-private readonly notificationService = inject(NotificationService);
+  private readonly notificationService = inject(NotificationService);
 
   lawyers = signal<LawyersResponse[]>([]);
   isLoading = signal<boolean>(false);
@@ -48,7 +50,7 @@ private readonly notificationService = inject(NotificationService);
 
   sendInformationNotification(): void {
     const context = this.contextService.getCurrentContext();
-    const payload = { ...context, name: 'Informativo' };
+    const payload = { ...context, name: NotificationTypeName.INFORMATIVO };
 
     if (payload.companyId !== 0) {
       this.notificationService.getNotificationByInfo(payload).subscribe({
@@ -63,7 +65,9 @@ private readonly notificationService = inject(NotificationService);
           }
         },
         error: (err) => {
-          console.error('Error al obtener la notificación:', err);
+          const config = getCustomMappedConfig(payload.name);
+          if (config) { this.toastService.triggerAlert(config); }
+
         }
       });
     }

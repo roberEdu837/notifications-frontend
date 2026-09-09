@@ -28,14 +28,14 @@ export const SIMULATOR_CONFIGURATIONS: NotificationConfig[] = [
     color: NotificationColor.DANGER,
     durationSeconds: 0,
     allowClose: true,
-    message: 'Ocurrió un error en el sistema, intenta más tarde'
+    message: 'Sesión expirada. Serás redirigido al login.'
   },
   {
     name: NotificationTypeName.ERROR,
-    color: NotificationColor.WARNING,
+    color: NotificationColor.DANGER,
     durationSeconds: 10,
     allowClose: true,
-    message: 'Sesión expirada. Serás redirigido al login.'
+    message: 'Ocurrió un error en el sistema, intenta más tarde'
   }
 ];
 
